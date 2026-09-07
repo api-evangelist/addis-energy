@@ -64,5 +64,25 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Addis Energy is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.nasdaqprivatemarket.com/
+Addis Energy is a Somerville, Massachusetts deep-tech energy company, founded in January 2025 out of
+research in the MIT Department of Materials Science and Engineering, developing Stimulated Geologic
+Ammonia — injecting nitrogen, water and engineered fluids into iron-rich subsurface rock and using
+the earth's own heat and pressure as the reactor to produce ammonia underground rather than in a
+Haber-Bosch plant.
+
+**Addis Energy is not a software vendor.** It publishes no developer program, no developer portal,
+no API keys, no SDKs and no MCP server. Probed on 2026-09-07: `/openapi.json`, `/swagger.json`,
+`/graphql`, `/llms.txt` and every `/.well-known/` path returned 404, no package exists in any
+registry, and `https://github.com/addisenergy` returns 404.
+
+The one machine-readable interface it does expose is the **WordPress core REST content API** behind
+its corporate website — anonymously readable, read-only, and self-describing at
+<https://addisenergy.com/wp-json/> (218 routes across 9 namespaces at capture). This repository
+profiles that surface: eight OpenAPI documents covering 21 operations, derived from the server's own
+published argument schemas and verified against live responses, plus the authentication, conventions,
+error, lifecycle, data-model and conformance artifacts that describe how it actually behaves.
+
+- Website: <https://addisenergy.com/>
+- Technology: <https://addisenergy.com/technology/>
+- News: <https://addisenergy.com/blog/> (RSS: <https://addisenergy.com/feed/>)
+- API root: <https://addisenergy.com/wp-json/>

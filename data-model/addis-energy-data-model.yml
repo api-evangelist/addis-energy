@@ -1,0 +1,165 @@
+generated: '2026-09-07'
+method: derived
+source: openapi/ in this repo, derived from the $ref graph and the id-reference fields published in the live route index and observed in live responses on 2026-09-07
+description: >-
+  Entity-relationship graph for the WordPress content model behind addisenergy.com. Every
+  relationship below is carried by a real integer id field in the anonymous response body and is
+  independently traversable via the `_links` relations on each object. Verified counts are the live
+  X-WP-Total values read on 2026-09-07.
+entities:
+- name: Post
+  api: addis-energy:addis-energy-posts-api
+  collection: /wp/v2/posts
+  identifier: id
+  id_type: integer
+  count_observed: 13
+  description: An Addis Energy news item or press-coverage entry.
+  key_fields: [id, date, slug, title.rendered, content.rendered, excerpt.rendered, link, author, featured_media, categories, tags]
+- name: Page
+  api: addis-energy:addis-energy-pages-api
+  collection: /wp/v2/pages
+  identifier: id
+  id_type: integer
+  count_observed: 7
+  description: >-
+    A static page — home (sample-page), technology, blog (News), careers, contact, privacy-policy,
+    terms-conditions.
+  key_fields: [id, slug, title.rendered, content.rendered, link, parent, menu_order, author, featured_media]
+- name: MediaItem
+  api: addis-energy:addis-energy-media-api
+  collection: /wp/v2/media
+  identifier: id
+  id_type: integer
+  count_observed: 73
+  description: A media library attachment with its generated size variants.
+  key_fields: [id, slug, title.rendered, alt_text, caption.rendered, media_type, mime_type, media_details, source_url, author]
+- name: Category
+  api: addis-energy:addis-energy-taxonomy-api
+  collection: /wp/v2/categories
+  identifier: id
+  id_type: integer
+  count_observed: 3
+  description: 'A term in the `category` taxonomy. Observed: Press Coverage (11 posts), Blog (2 posts), Uncategorized (0 posts).'
+  key_fields: [id, name, slug, count, description, parent, link]
+- name: Tag
+  api: addis-energy:addis-energy-taxonomy-api
+  collection: /wp/v2/tags
+  identifier: id
+  id_type: integer
+  count_observed: 0
+  description: A term in the `post_tag` taxonomy. The route is served but the taxonomy is empty.
+  key_fields: [id, name, slug, count, description, link]
+- name: User
+  api: addis-energy:addis-energy-users-api
+  collection: /wp/v2/users
+  identifier: id
+  id_type: integer
+  count_observed: 2
+  description: A public author record for someone credited on a published post.
+  key_fields: [id, name, slug, link, description, avatar_urls]
+- name: SearchResult
+  api: addis-energy:addis-energy-search-api
+  collection: /wp/v2/search
+  identifier: id
+  id_type: integer
+  count_observed: 20
+  description: >-
+    A projection, not a stored entity. `id` + `subtype` together resolve back to a Post or a Page.
+  key_fields: [id, title, url, type, subtype]
+relationships:
+- from: Post
+  to: User
+  kind: belongs_to
+  via: author
+  description: Each post carries the integer id of its author. Resolve at /wp/v2/users/{author}.
+  link_relation: author
+- from: Post
+  to: MediaItem
+  kind: has_one
+  via: featured_media
+  description: >-
+    Optional featured image. 0 means none. Resolve at /wp/v2/media/{featured_media}.
+  link_relation: wp:featuredmedia
+- from: Post
+  to: Category
+  kind: has_many
+  via: categories
+  description: >-
+    Array of category term ids. This is the only classification actually in use — 11 of 13 posts
+    sit in Press Coverage, 2 in Blog.
+  link_relation: wp:term
+- from: Post
+  to: Tag
+  kind: has_many
+  via: tags
+  description: Array of post_tag term ids. Always empty — the taxonomy has 0 terms.
+  link_relation: wp:term
+- from: Page
+  to: User
+  kind: belongs_to
+  via: author
+  link_relation: author
+- from: Page
+  to: Page
+  kind: belongs_to
+  via: parent
+  description: Pages are hierarchical. 0 means top-level; all 7 observed pages are top-level.
+  link_relation: up
+- from: Page
+  to: MediaItem
+  kind: has_one
+  via: featured_media
+  link_relation: wp:featuredmedia
+- from: MediaItem
+  to: User
+  kind: belongs_to
+  via: author
+  link_relation: author
+- from: MediaItem
+  to: Post
+  kind: belongs_to
+  via: post
+  description: The post or page the attachment was uploaded to, when it was uploaded in context.
+  link_relation: about
+- from: Category
+  to: Category
+  kind: belongs_to
+  via: parent
+  description: Categories are hierarchical. All 3 observed terms are top-level.
+- from: SearchResult
+  to: Post
+  kind: belongs_to
+  via: id
+  description: 'Resolve via subtype: `post` -> /wp/v2/posts/{id}, `page` -> /wp/v2/pages/{id}.'
+  link_relation: self
+id_conventions:
+  scheme: integer
+  prefixes: []
+  detail: >-
+    Ids are bare auto-increment integers with no type prefix. Post, Page and MediaItem ids are
+    drawn from one shared sequence and so do not collide with each other (observed: pages 2, 6, 15,
+    21, 180, 210, 212; posts 498, 507, 541; media 609, 614, 617). Category, Tag and User ids are
+    separate sequences and DO overlap with them, so a bare integer is only meaningful together
+    with its collection. Slugs are stable, human-readable secondary keys and are the safer join
+    key for anything long-lived.
+custom_fields:
+  acf:
+    registered: true
+    populated: false
+    detail: >-
+      The Advanced Custom Fields plugin exposes an `acf` member on every post and page object, but
+      it was observed empty (`[]`) across every sampled object on 2026-09-07. No Addis-Energy-
+      specific structured data — no project, formation, well, or funding entity — is published
+      through it. The content model is WordPress core and nothing more.
+  meta:
+    registered: true
+    fields: [inline_featured_image, footnotes]
+    detail: Editor-side presentation flags only; no domain data.
+  class_list:
+    detail: >-
+      Each object carries a `class_list` array that redundantly encodes its type, status, format
+      and category slug (e.g. `category-press-coverage`) — a cheap way to filter without a second
+      taxonomy lookup.
+traversal_note: >-
+  Every relationship above can be resolved in one round trip by adding `_embed` to the request,
+  which inlines author, featured media and terms into an `_embedded` object.

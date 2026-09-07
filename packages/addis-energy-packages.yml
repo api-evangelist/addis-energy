@@ -1,0 +1,49 @@
+generated: '2026-09-07'
+method: searched
+source: npm registry search, PyPI JSON API, GitHub user/repo search, and a full walk of https://addisenergy.com/
+description: >-
+  Addis Energy publishes no client libraries. Registry and code-host searches on 2026-09-07 all
+  came back empty and the site links to no repository of any kind. NO SDKs pointer is wired in
+  apis.yml — this file records a verified absence. The WordPress REST API profiled here is
+  consumable with any HTTP client; the generic community WordPress SDKs are third-party and are
+  deliberately NOT listed as Addis Energy packages.
+package_count: 0
+official_package_count: 0
+packages: []
+registries_searched:
+- registry: npm
+  endpoint: https://registry.npmjs.org/-/v1/search?text=addis-energy
+  result: no first-party package
+  version: null
+  published: null
+  checked: '2026-09-07'
+- registry: pypi
+  endpoint: https://pypi.org/pypi/addis-energy/json
+  status: 404
+  result: no package
+  version: null
+  published: null
+  checked: '2026-09-07'
+- registry: github
+  endpoint: https://api.github.com/search/users?q=addisenergy
+  result: 0 users, 0 organizations
+  version: null
+  published: null
+  checked: '2026-09-07'
+- registry: github
+  endpoint: https://api.github.com/search/repositories?q=%22addis+energy%22+ammonia
+  result: 0 repositories
+  version: null
+  published: null
+  checked: '2026-09-07'
+- registry: cdn
+  endpoint: https://addisenergy.com/ (script tags)
+  result: >-
+    Only Google Fonts and the site's own theme assets. No vendor-distributed client build, pinned
+    or floating.
+  version: null
+  published: null
+  checked: '2026-09-07'
+notes: >-
+  A missing SDK is the expected result here, not a gap to hold against the company. Addis Energy
+  has no API product for an SDK to wrap; https://github.com/addisenergy returns 404.

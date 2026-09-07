@@ -1,18 +1,263 @@
 aid: addis-energy
 name: Addis Energy
-description: 'Addis Energy is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Addis Energy is a Somerville, Massachusetts deep-tech energy company founded in January 2025 out
+  of research in the MIT Department of Materials Science and Engineering. It is developing
+  Stimulated Geologic Ammonia — injecting nitrogen, water and engineered fluids into iron-rich
+  subsurface rock and using the earth's own heat and pressure as the reactor to produce ammonia
+  underground rather than in a Haber-Bosch plant. Founded by Michael Alexander (CEO), Charlie
+  Mitchell (COO), Iwnetim Abate (Chief Science Officer) and Yet-Ming Chiang (Chief Strategy
+  Officer), it has raised an $8.3M seed round plus a $4.5M ARPA-E award, backed by Engine Ventures,
+  At One Ventures, Pillar VC, Voyager VC, Blindspot Ventures and Emerson Collective. It is not a
+  software vendor: no developer program, portal, SDKs or product API. The only machine-readable
+  interface it exposes is the WordPress core REST content API behind addisenergy.com, captured here
+  for discovery and anonymously readable but read-only.
 url: https://raw.githubusercontent.com/api-evangelist/addis-energy/refs/heads/main/apis.yml
+image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+position: Producing
 specificationVersion: '0.20'
 created: '2026-09-07'
 modified: '2026-09-07'
 tags:
 - Company
-apis: []
+- Energy
+- Clean Energy
+- Ammonia
+- Climate Tech
+- Deep Tech
+- Geoscience
+- Subsurface
+- Materials Science
+- Hydrogen
+- Fertilizer
+- Content
+apis:
+- aid: addis-energy:addis-energy-posts-api
+  name: Addis Energy Posts API
+  image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
+  description: >-
+    Public, unauthenticated read access to the Addis Energy news and press-coverage archive via the
+    WordPress core REST API. Verified live at 13 published posts across 3 categories on 2026-09-07.
+  humanURL: https://addisenergy.com/wp-json/
+  baseURL: https://addisenergy.com/wp-json
+  tags:
+  - Posts
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/addis-energy-posts-api-openapi.yml
+  - type: Overlay
+    url: overlays/addis-energy-posts-api-overlay.yaml
+  - type: Authentication
+    url: authentication/addis-energy-authentication.yml
+  - type: ErrorCatalog
+    url: errors/addis-energy-problem-types.yml
+  - type: Conventions
+    url: conventions/addis-energy-conventions.yml
+  - type: DataModel
+    url: data-model/addis-energy-data-model.yml
+  - type: Conformance
+    url: conformance/addis-energy-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/addis-energy-lifecycle.yml
+- aid: addis-energy:addis-energy-pages-api
+  name: Addis Energy Pages API
+  image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
+  description: >-
+    Public, unauthenticated read access to the static pages of addisenergy.com — Home, Technology,
+    News, Careers, Contact, Privacy Policy and Terms & Conditions. Verified live at 7 published
+    pages on 2026-09-07.
+  humanURL: https://addisenergy.com/wp-json/
+  baseURL: https://addisenergy.com/wp-json
+  tags:
+  - Pages
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/addis-energy-pages-api-openapi.yml
+  - type: Overlay
+    url: overlays/addis-energy-pages-api-overlay.yaml
+  - type: Authentication
+    url: authentication/addis-energy-authentication.yml
+  - type: ErrorCatalog
+    url: errors/addis-energy-problem-types.yml
+  - type: Conventions
+    url: conventions/addis-energy-conventions.yml
+  - type: DataModel
+    url: data-model/addis-energy-data-model.yml
+  - type: Conformance
+    url: conformance/addis-energy-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/addis-energy-lifecycle.yml
+- aid: addis-energy:addis-energy-media-api
+  name: Addis Energy Media API
+  image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
+  description: >-
+    Public, unauthenticated read access to the media library behind addisenergy.com — site
+    photography, technology diagrams, team headshots and press assets with their generated size
+    variants. Verified live at 73 attachments on 2026-09-07.
+  humanURL: https://addisenergy.com/wp-json/
+  baseURL: https://addisenergy.com/wp-json
+  tags:
+  - Media
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/addis-energy-media-api-openapi.yml
+  - type: Overlay
+    url: overlays/addis-energy-media-api-overlay.yaml
+  - type: Authentication
+    url: authentication/addis-energy-authentication.yml
+  - type: ErrorCatalog
+    url: errors/addis-energy-problem-types.yml
+  - type: Conventions
+    url: conventions/addis-energy-conventions.yml
+  - type: DataModel
+    url: data-model/addis-energy-data-model.yml
+  - type: Conformance
+    url: conformance/addis-energy-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/addis-energy-lifecycle.yml
+- aid: addis-energy:addis-energy-taxonomy-api
+  name: Addis Energy Taxonomy API
+  image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
+  description: >-
+    Public, unauthenticated read access to the taxonomies that classify Addis Energy content — the
+    category taxonomy (Press Coverage, Blog, Uncategorized) and the post_tag taxonomy. Verified live
+    at 3 categories and 0 tags on 2026-09-07.
+  humanURL: https://addisenergy.com/wp-json/
+  baseURL: https://addisenergy.com/wp-json
+  tags:
+  - Categories
+  - Taxonomy
+  properties:
+  - type: OpenAPI
+    url: openapi/addis-energy-taxonomy-api-openapi.yml
+  - type: Overlay
+    url: overlays/addis-energy-taxonomy-api-overlay.yaml
+  - type: Authentication
+    url: authentication/addis-energy-authentication.yml
+  - type: ErrorCatalog
+    url: errors/addis-energy-problem-types.yml
+  - type: Conventions
+    url: conventions/addis-energy-conventions.yml
+  - type: DataModel
+    url: data-model/addis-energy-data-model.yml
+  - type: Conformance
+    url: conformance/addis-energy-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/addis-energy-lifecycle.yml
+- aid: addis-energy:addis-energy-users-api
+  name: Addis Energy Users API
+  image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
+  description: >-
+    Public, unauthenticated read access to the public author records behind addisenergy.com — the
+    people credited on published news posts. Anonymous responses are limited to the WordPress view
+    context: no email addresses, roles or capabilities are exposed. Verified live at 2 authors on
+    2026-09-07.
+  humanURL: https://addisenergy.com/wp-json/
+  baseURL: https://addisenergy.com/wp-json
+  tags:
+  - User
+  properties:
+  - type: OpenAPI
+    url: openapi/addis-energy-users-api-openapi.yml
+  - type: Overlay
+    url: overlays/addis-energy-users-api-overlay.yaml
+  - type: Authentication
+    url: authentication/addis-energy-authentication.yml
+  - type: ErrorCatalog
+    url: errors/addis-energy-problem-types.yml
+  - type: Conventions
+    url: conventions/addis-energy-conventions.yml
+  - type: DataModel
+    url: data-model/addis-energy-data-model.yml
+  - type: Conformance
+    url: conformance/addis-energy-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/addis-energy-lifecycle.yml
+- aid: addis-energy:addis-energy-search-api
+  name: Addis Energy Search API
+  image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
+  description: >-
+    Public, unauthenticated cross-content search over addisenergy.com — posts and pages together —
+    returning lightweight id / title / url / type / subtype records. Verified live at 20 searchable
+    objects on 2026-09-07.
+  humanURL: https://addisenergy.com/wp-json/
+  baseURL: https://addisenergy.com/wp-json
+  tags:
+  - Search
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/addis-energy-search-api-openapi.yml
+  - type: Overlay
+    url: overlays/addis-energy-search-api-overlay.yaml
+  - type: Authentication
+    url: authentication/addis-energy-authentication.yml
+  - type: ErrorCatalog
+    url: errors/addis-energy-problem-types.yml
+  - type: Conventions
+    url: conventions/addis-energy-conventions.yml
+  - type: Conformance
+    url: conformance/addis-energy-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/addis-energy-lifecycle.yml
+- aid: addis-energy:addis-energy-discovery-api
+  name: Addis Energy Discovery API
+  image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
+  description: >-
+    Public, unauthenticated discovery metadata for addisenergy.com — the self-describing route index
+    (218 routes across 9 namespaces at capture), the registered content types and taxonomies, and
+    the publication statuses. This is the surface that makes the rest of the API machine-readable in
+    the absence of any published documentation.
+  humanURL: https://addisenergy.com/wp-json/
+  baseURL: https://addisenergy.com/wp-json
+  tags:
+  - Discovery
+  - Metadata
+  properties:
+  - type: OpenAPI
+    url: openapi/addis-energy-discovery-api-openapi.yml
+  - type: Overlay
+    url: overlays/addis-energy-discovery-api-overlay.yaml
+  - type: Authentication
+    url: authentication/addis-energy-authentication.yml
+  - type: ErrorCatalog
+    url: errors/addis-energy-problem-types.yml
+  - type: Conventions
+    url: conventions/addis-energy-conventions.yml
+  - type: Conformance
+    url: conformance/addis-energy-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/addis-energy-lifecycle.yml
+- aid: addis-energy:addis-energy-oembed-api
+  name: Addis Energy oEmbed API
+  image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
+  description: >-
+    Public oEmbed 1.0 provider endpoint for addisenergy.com URLs, returning embeddable rich
+    metadata — title, author, thumbnail and iframe HTML — for any post or page on the site. Verified
+    live (HTTP 200) on 2026-09-07.
+  humanURL: https://addisenergy.com/wp-json/
+  baseURL: https://addisenergy.com/wp-json
+  tags:
+  - oEmbed
+  - Metadata
+  properties:
+  - type: OpenAPI
+    url: openapi/addis-energy-oembed-api-openapi.yml
+  - type: Overlay
+    url: overlays/addis-energy-oembed-api-overlay.yaml
+  - type: Authentication
+    url: authentication/addis-energy-authentication.yml
+  - type: ErrorCatalog
+    url: errors/addis-energy-problem-types.yml
+  - type: Conventions
+    url: conventions/addis-energy-conventions.yml
+  - type: Conformance
+    url: conformance/addis-energy-conformance.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +265,53 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://addisenergy.com/
+- type: About
+  url: https://addisenergy.com/technology/
+- type: x-team
+  url: https://addisenergy.com/team/
+- type: Blog
+  url: https://addisenergy.com/blog/
+- type: BlogRSS
+  url: https://addisenergy.com/feed/
+- type: Careers
+  url: https://addisenergy.com/careers/
+- type: Contact
+  url: https://addisenergy.com/contact/
+- type: TermsOfService
+  url: https://addisenergy.com/terms-conditions/
+- type: PrivacyPolicy
+  url: https://addisenergy.com/privacy-policy/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/addisenergy/
+- type: Authentication
+  url: authentication/addis-energy-authentication.yml
+- type: Conventions
+  url: conventions/addis-energy-conventions.yml
+- type: ErrorCatalog
+  url: errors/addis-energy-problem-types.yml
+- type: DataModel
+  url: data-model/addis-energy-data-model.yml
+- type: Conformance
+  url: conformance/addis-energy-conformance.yml
+- type: Lifecycle
+  url: lifecycle/addis-energy-lifecycle.yml
+- type: RateLimits
+  url: rate-limits/addis-energy-rate-limits.yml
+- type: Plans
+  url: plans/addis-energy-plans-pricing.yml
+- type: LLMsTxt
+  url: llms/addis-energy-llms.txt
+- type: Examples
+  url: examples/addis-energy-examples.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DomainSecurity
+  url: security/addis-energy-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/addis-energy-agentic-access.yml
+x-enrichment:
+  date: '2026-09-07'
+  status: enriched
+  artifacts_added: 35
+  pass: local-v3

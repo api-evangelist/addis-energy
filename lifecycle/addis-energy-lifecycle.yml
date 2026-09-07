@@ -1,0 +1,61 @@
+generated: '2026-09-07'
+method: probed
+source: https://addisenergy.com/wp-json/ route index and a full walk of https://addisenergy.com/ on 2026-09-07
+description: >-
+  Lifecycle posture of the WordPress REST surface behind addisenergy.com. Addis Energy makes no
+  API commitments of any kind — there is no versioning policy, no deprecation policy, no SLA and
+  no status page. The versioning that exists is inherited from WordPress core, not authored by the
+  company. NO StatusPage and NO Deprecation pointer is wired in apis.yml, because neither exists.
+versioning:
+  scheme: path-namespace
+  current_version: wp/v2
+  authored_by: WordPress core (upstream), not Addis Energy
+  policy_published: false
+  policy_url: null
+  detail: >-
+    wp/v2 has been the stable WordPress REST namespace since WordPress 4.7 (2016). A future wp/v3
+    would be introduced by upstream WordPress, not by Addis Energy, and this site would inherit it
+    on a plugin/core update with no announcement to any consumer.
+platform:
+  server: Apache
+  runtime: PHP/8.2.33
+  cms: WordPress 7.1
+  host: SiteGround (siteground-optimizer/v1 namespace registered)
+  note: >-
+    Platform versions are advertised in the X-Powered-By response header and the site's own
+    generator meta tag. They are recorded as observed facts, not as a security finding.
+deprecation:
+  policy_published: false
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  detail: >-
+    No RFC 8594 Sunset or Deprecation header was observed on any response, and no deprecation page
+    exists on the site. No operation in openapi/ is marked deprecated. A consumer would learn a
+    route had gone away by receiving rest_no_route.
+sla:
+  published: false
+  url: null
+  uptime_target: null
+status_page:
+  published: false
+  url: null
+  detail: >-
+    No status.addisenergy.com, no statuspage.io tenant, and no status link anywhere on the site.
+    Searched the full site nav, footer, contact page and the wp-json route index on 2026-09-07.
+support:
+  api_support_channel: false
+  general_contact: https://addisenergy.com/contact/
+  email: contact@addisenergy.com
+  detail: >-
+    The contact address is a general company enquiry line, not API support. There is no developer
+    support channel, forum, or community, because there is no developer program.
+stability:
+  assessment: incidental
+  detail: >-
+    This surface is the by-product of a marketing website, not a product. It carries no
+    commitment, could be switched off by a plugin change or a security-hardening decision at any
+    time without notice, and has no consumer contract behind it. Treat it as best-effort read-only
+    discovery data and re-validate before depending on it.

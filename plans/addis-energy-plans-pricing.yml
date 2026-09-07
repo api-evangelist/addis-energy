@@ -1,0 +1,21 @@
+generated: '2026-09-07'
+method: searched
+source: https://addisenergy.com/ (full site walk — Home, Technology, Team, News, Careers, Contact, Privacy Policy, Terms & Conditions; no pricing page exists)
+description: >-
+  Addis Energy sells no API and publishes no plans. It is a pre-revenue deep-tech energy company
+  developing a subsurface ammonia production process; its commercial motion is capital (an $8.3M
+  seed round and a $4.5M ARPA-E award), not software subscriptions. The site has no pricing page,
+  no signup, no login and no billing surface. The WordPress REST content API profiled in this
+  repository is incidentally public at no cost and with no account — free because nobody metered
+  it, not because a free tier was designed.
+plan_count: 0
+pricing_url: null
+signup_url: null
+free_tier: null
+plans: []
+access_model:
+  pricing: none
+  onboarding: none
+  trial: false
+  public: true
+  label: Public read-only content API, no signup, no pricing

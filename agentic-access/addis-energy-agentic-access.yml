@@ -1,0 +1,167 @@
+generated: '2026-09-07'
+method: generated
+source: classification of every operation in openapi/ against the live surface probed 2026-09-07
+description: >-
+  RECOMMENDED x-agentic-access contracts for the public Addis Energy surface. This is an API
+  Evangelist recommendation authored on the provider's behalf, NOT a declaration Addis Energy has
+  made — the company publishes no agent policy of any kind. The classification is simple because
+  the surface is: every anonymously reachable operation is a safe, reversible, unauthenticated
+  read.
+provider_declared: false
+default_policy:
+  action_class: read
+  consequence: none
+  reversible: true
+  token: none
+  escalation: none
+  human_in_the_loop: false
+  rationale: >-
+    The entire public surface is GET over published marketing content. No operation creates,
+    charges, sends, deletes or discloses anything non-public, so no operation warrants a
+    confirmation step.
+operations:
+- operationId: listPosts
+  action_class: read
+  consequence: none
+  scope: public-content
+  token: none
+  escalation: none
+- operationId: getPost
+  action_class: read
+  consequence: none
+  scope: public-content
+  token: none
+  escalation: none
+- operationId: listPages
+  action_class: read
+  consequence: none
+  scope: public-content
+  token: none
+  escalation: none
+- operationId: getPage
+  action_class: read
+  consequence: none
+  scope: public-content
+  token: none
+  escalation: none
+- operationId: listMedia
+  action_class: read
+  consequence: none
+  scope: public-content
+  token: none
+  escalation: none
+- operationId: getMediaItem
+  action_class: read
+  consequence: none
+  scope: public-content
+  token: none
+  escalation: none
+- operationId: listCategories
+  action_class: read
+  consequence: none
+  scope: public-taxonomy
+  token: none
+  escalation: none
+- operationId: getCategory
+  action_class: read
+  consequence: none
+  scope: public-taxonomy
+  token: none
+  escalation: none
+- operationId: listTags
+  action_class: read
+  consequence: none
+  scope: public-taxonomy
+  token: none
+  escalation: none
+- operationId: getTag
+  action_class: read
+  consequence: none
+  scope: public-taxonomy
+  token: none
+  escalation: none
+- operationId: listUsers
+  action_class: read
+  consequence: none
+  scope: public-authors
+  token: none
+  escalation: none
+  note: >-
+    Returns display name, slug, author-archive URL and avatar URL for people who have published on
+    the site. No email address or role is exposed in the anonymous `view` context. Treat the
+    returned names as personal data and handle accordingly even though the API discloses them
+    freely.
+- operationId: getUser
+  action_class: read
+  consequence: none
+  scope: public-authors
+  token: none
+  escalation: none
+- operationId: search
+  action_class: read
+  consequence: none
+  scope: public-content
+  token: none
+  escalation: none
+- operationId: getRouteIndex
+  action_class: read
+  consequence: none
+  scope: discovery
+  token: none
+  escalation: none
+- operationId: getWpV2Namespace
+  action_class: read
+  consequence: none
+  scope: discovery
+  token: none
+  escalation: none
+- operationId: listTypes
+  action_class: read
+  consequence: none
+  scope: discovery
+  token: none
+  escalation: none
+- operationId: getType
+  action_class: read
+  consequence: none
+  scope: discovery
+  token: none
+  escalation: none
+- operationId: listTaxonomies
+  action_class: read
+  consequence: none
+  scope: discovery
+  token: none
+  escalation: none
+- operationId: getTaxonomy
+  action_class: read
+  consequence: none
+  scope: discovery
+  token: none
+  escalation: none
+- operationId: listStatuses
+  action_class: read
+  consequence: none
+  scope: discovery
+  token: none
+  escalation: none
+- operationId: getOEmbed
+  action_class: read
+  consequence: none
+  scope: public-content
+  token: none
+  escalation: none
+out_of_scope:
+  detail: >-
+    The write half of the wp/v2 routes, the contact-form-7 feedback endpoint, the
+    siteground-optimizer, code-snippets, duplicator and wp-abilities namespaces, and
+    /wp/v2/settings are all administrator-only site-operations surfaces. They are deliberately
+    excluded from openapi/ and no agent contract is recommended for them: they are not a public
+    API and an agent should never attempt them.
+agent_guidance:
+  robots: >-
+    Responses carry X-Robots-Tag: noindex. Read, but do not republish this content into a search
+    index.
+  rate: >-
+    No rate-limit signal is returned. Budget yourself: the entire corpus is four requests at
+    per_page=100, and https://addisenergy.com/feed/ is the cheaper change signal.

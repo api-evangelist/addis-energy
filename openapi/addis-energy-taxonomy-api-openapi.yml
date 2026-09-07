@@ -1,0 +1,382 @@
+openapi: 3.2.0
+info:
+  title: Addis Energy Taxonomy API
+  version: wp/v2
+  description: Public, unauthenticated read access to the taxonomies that classify Addis Energy content — the `category`
+    taxonomy (3 terms at capture, including Press Coverage) and the `post_tag` taxonomy (0 terms at capture) — via
+    the WordPress core REST API. Anonymous access is read-only.
+  contact:
+    name: Addis Energy
+    url: https://addisenergy.com/contact/
+  x-derived-from: https://addisenergy.com/wp-json/ route index (218 routes across 9 namespaces, captured 2026-09-07)
+  x-derived-on: '2026-09-07'
+  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and
+    no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every
+    path, parameter and error shape here was read from the server's own published route-index document and verified
+    against live anonymous responses on 2026-09-07 — nothing is invented.
+servers:
+- url: https://addisenergy.com/wp-json
+  description: Addis Energy WordPress REST API
+tags:
+- name: Taxonomy
+  description: Categories and tags applied to Addis Energy posts.
+paths:
+  /wp/v2/categories:
+    get:
+      operationId: listCategories
+      summary: List categories
+      description: Retrieve the terms of the `category` taxonomy. Verified live at 3 terms on 2026-09-07.
+      tags:
+      - Taxonomy
+      parameters:
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: exclude
+        in: query
+        description: Ensure result set excludes specific IDs.
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+      - name: hide_empty
+        in: query
+        description: Whether to hide terms not assigned to any posts.
+        schema:
+          type: boolean
+          default: false
+      - name: include
+        in: query
+        description: Limit result set to specific IDs.
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+      - name: order
+        in: query
+        description: Order sort attribute ascending or descending.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      - name: orderby
+        in: query
+        description: Sort collection by term attribute.
+        schema:
+          type: string
+          enum:
+          - id
+          - include
+          - name
+          - slug
+          - include_slugs
+          - term_group
+          - description
+          - count
+          default: name
+      - name: page
+        in: query
+        description: Current page of the collection.
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: parent
+        in: query
+        description: Limit result set to terms assigned to a specific parent.
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Maximum number of items to be returned in result set.
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: post
+        in: query
+        description: Limit result set to terms assigned to a specific post.
+        schema:
+          type: integer
+      - name: search
+        in: query
+        description: Limit results to those matching a string.
+        schema:
+          type: string
+      - name: slug
+        in: query
+        description: Limit result set to terms with one or more specific slugs.
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: A collection of category terms.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Term'
+        '400': &id001
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404': &id002
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+  /wp/v2/categories/{id}:
+    get:
+      operationId: getCategory
+      summary: Get a category
+      description: Retrieve a single category term.
+      tags:
+      - Taxonomy
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier for the term.
+        schema:
+          type: integer
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      responses:
+        '200':
+          description: A single category term.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Term'
+        '400': *id001
+        '404': *id002
+  /wp/v2/tags:
+    get:
+      operationId: listTags
+      summary: List tags
+      description: 'Retrieve the terms of the `post_tag` taxonomy. The route is served and returns 200, but was
+        verified empty (`X-WP-Total: 0`) on 2026-09-07 — Addis Energy classifies posts by category only.'
+      tags:
+      - Taxonomy
+      parameters:
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: exclude
+        in: query
+        description: Ensure result set excludes specific IDs.
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+      - name: hide_empty
+        in: query
+        description: Whether to hide terms not assigned to any posts.
+        schema:
+          type: boolean
+          default: false
+      - name: include
+        in: query
+        description: Limit result set to specific IDs.
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+      - name: offset
+        in: query
+        description: Offset the result set by a specific number of items.
+        schema:
+          type: integer
+      - name: order
+        in: query
+        description: Order sort attribute ascending or descending.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      - name: orderby
+        in: query
+        description: Sort collection by term attribute.
+        schema:
+          type: string
+          enum:
+          - id
+          - include
+          - name
+          - slug
+          - include_slugs
+          - term_group
+          - description
+          - count
+          default: name
+      - name: page
+        in: query
+        description: Current page of the collection.
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        description: Maximum number of items to be returned in result set.
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: post
+        in: query
+        description: Limit result set to terms assigned to a specific post.
+        schema:
+          type: integer
+      - name: search
+        in: query
+        description: Limit results to those matching a string.
+        schema:
+          type: string
+      - name: slug
+        in: query
+        description: Limit result set to terms with one or more specific slugs.
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: A collection of tag terms.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Term'
+        '400': *id001
+        '404': *id002
+  /wp/v2/tags/{id}:
+    get:
+      operationId: getTag
+      summary: Get a tag
+      description: Retrieve a single tag term.
+      tags:
+      - Taxonomy
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier for the term.
+        schema:
+          type: integer
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      responses:
+        '200':
+          description: A single tag term.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Term'
+        '400': *id001
+        '404': *id002
+components:
+  schemas:
+    WPError:
+      type: object
+      description: The WordPress REST error envelope returned on every 4xx/5xx. Observed live on 2026-09-07.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug, e.g. rest_post_invalid_page_number.
+          examples:
+          - rest_no_route
+        message:
+          type: string
+          description: Human-readable message.
+          examples:
+          - No route was found matching the URL and request method.
+        data:
+          type: object
+          description: Error detail; always carries the HTTP status.
+          properties:
+            status:
+              type: integer
+              examples:
+              - 404
+      required:
+      - code
+      - message
+      - data
+    Term:
+      type: object
+      description: A taxonomy term.
+      properties:
+        id:
+          type: integer
+        count:
+          type: integer
+          description: Number of published posts for the term.
+        description:
+          type: string
+        link:
+          type: string
+          format: uri
+        name:
+          type: string
+          examples:
+          - Press Coverage
+        slug:
+          type: string
+        taxonomy:
+          type: string
+          enum:
+          - category
+          - post_tag
+        parent:
+          type: integer
+          description: The parent term ID. Categories only.
+        _links:
+          type: object

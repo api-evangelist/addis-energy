@@ -1,0 +1,55 @@
+overlay: 1.0.0
+info:
+  title: Addis Energy Media API — API Evangelist enhancements
+  version: 1.0.0
+  description: 'API Evangelist enhancements over openapi/addis-energy-media-api-openapi.yml. This overlay adds provenance,
+    cross-links to the runtime-semantics artifacts in this repository, and the agent posture. It NEVER changes a
+    path, parameter, schema or response: every one of those was read from the provider''s own published route index
+    and from live responses, and altering them would make the contract wrong.'
+extends: openapi/addis-energy-media-api-openapi.yml
+x-generated: '2026-09-07'
+x-method: generated
+x-source: openapi/addis-energy-media-api-openapi.yml
+actions:
+- target: $.info
+  description: Record that this contract is a third-party derivation of the provider's own self-describing route
+    index, not a document Addis Energy publishes.
+  update:
+    x-api-evangelist-profile: https://apis.io/addis-energy
+    x-contract-provenance: derived-from-route-index
+    x-provider-publishes-spec: false
+- target: $.info
+  description: Attach the cross-cutting artifacts that carry the runtime semantics this spec cannot express.
+  update:
+    x-artifacts:
+      authentication: authentication/addis-energy-authentication.yml
+      conventions: conventions/addis-energy-conventions.yml
+      errors: errors/addis-energy-problem-types.yml
+      conformance: conformance/addis-energy-conformance.yml
+      lifecycle: lifecycle/addis-energy-lifecycle.yml
+      rate_limits: rate-limits/addis-energy-rate-limits.yml
+      examples: examples/addis-energy-examples.yml
+- target: $.info
+  description: 'State the agent posture: anonymous, read-only, unmetered but uncommitted.'
+  update:
+    x-agentic-access:
+      default_action_class: read
+      consequence: none
+      token: none
+      escalation: none
+      reversible: true
+      source: agentic-access/addis-energy-agentic-access.yml
+- target: $.paths.*.get
+  description: Mark every operation as a safe, idempotent, anonymous read — the whole public surface is GET.
+  update:
+    x-safe: true
+    x-idempotent: true
+    x-requires-auth: false
+- target: $.info
+  description: 'Record the operator''s crawl signal: responses are marked noindex and no rate-limit header is returned.'
+  update:
+    x-crawl-posture:
+      x_robots_tag: noindex
+      rate_limit_headers: false
+      preferred_change_signal: https://addisenergy.com/feed/
+      guidance: Cache; do not poll. The full corpus is four requests at per_page=100.

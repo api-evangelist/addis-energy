@@ -1,0 +1,264 @@
+openapi: 3.2.0
+info:
+  title: Addis Energy Users API
+  version: wp/v2
+  description: 'Public, unauthenticated read access to the public author records behind addisenergy.com — the people
+    credited on published news posts (2 authors at capture). Anonymous responses are limited to the WordPress `view`
+    context: no email addresses, roles, capabilities or registration dates are exposed.'
+  contact:
+    name: Addis Energy
+    url: https://addisenergy.com/contact/
+  x-derived-from: https://addisenergy.com/wp-json/ route index (218 routes across 9 namespaces, captured 2026-09-07)
+  x-derived-on: '2026-09-07'
+  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and
+    no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every
+    path, parameter and error shape here was read from the server's own published route-index document and verified
+    against live anonymous responses on 2026-09-07 — nothing is invented.
+servers:
+- url: https://addisenergy.com/wp-json
+  description: Addis Energy WordPress REST API
+tags:
+- name: Users
+  description: Public author records for Addis Energy posts.
+paths:
+  /wp/v2/users:
+    get:
+      operationId: listUsers
+      summary: List users
+      description: Retrieve the public author records. Verified live at 2 authors on 2026-09-07.
+      tags:
+      - Users
+      parameters:
+      - name: capabilities
+        in: query
+        description: Limit result set to users matching at least one specific capability provided. Accepts csv list
+          or single capability.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: exclude
+        in: query
+        description: Ensure result set excludes specific IDs.
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+      - name: has_published_posts
+        in: query
+        description: Limit result set to users who have published posts.
+        schema:
+          type: boolean
+      - name: include
+        in: query
+        description: Limit result set to specific IDs.
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+      - name: offset
+        in: query
+        description: Offset the result set by a specific number of items.
+        schema:
+          type: integer
+      - name: order
+        in: query
+        description: Order sort attribute ascending or descending.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      - name: orderby
+        in: query
+        description: Sort collection by user attribute.
+        schema:
+          type: string
+          enum:
+          - id
+          - include
+          - name
+          - registered_date
+          - slug
+          - include_slugs
+          - email
+          - url
+          default: name
+      - name: page
+        in: query
+        description: Current page of the collection.
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        description: Maximum number of items to be returned in result set.
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: roles
+        in: query
+        description: Limit result set to users matching at least one specific role provided. Accepts csv list or
+          single role.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: search
+        in: query
+        description: Limit results to those matching a string.
+        schema:
+          type: string
+      - name: search_columns
+        in: query
+        description: Array of column names to be searched.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - email
+            - name
+            - id
+            - username
+            - slug
+          default: []
+      - name: slug
+        in: query
+        description: Limit result set to users with one or more specific slugs.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: who
+        in: query
+        description: Limit result set to users who are considered authors.
+        schema:
+          type: string
+          enum:
+          - authors
+      responses:
+        '200':
+          description: A collection of public author records.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400': &id001
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404': &id002
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+  /wp/v2/users/{id}:
+    get:
+      operationId: getUser
+      summary: Get a user
+      description: Retrieve a single public author record.
+      tags:
+      - Users
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier for the user.
+        schema:
+          type: integer
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      responses:
+        '200':
+          description: A single public author record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400': *id001
+        '404': *id002
+components:
+  schemas:
+    WPError:
+      type: object
+      description: The WordPress REST error envelope returned on every 4xx/5xx. Observed live on 2026-09-07.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug, e.g. rest_post_invalid_page_number.
+          examples:
+          - rest_no_route
+        message:
+          type: string
+          description: Human-readable message.
+          examples:
+          - No route was found matching the URL and request method.
+        data:
+          type: object
+          description: Error detail; always carries the HTTP status.
+          properties:
+            status:
+              type: integer
+              examples:
+              - 404
+      required:
+      - code
+      - message
+      - data
+    User:
+      type: object
+      description: A public author record. Anonymous requests see only authors with published posts, in the `view`
+        context.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: Display name for the author.
+          examples:
+          - Charlie Mitchell
+        url:
+          type: string
+        description:
+          type: string
+        link:
+          type: string
+          format: uri
+          description: Author archive URL on addisenergy.com.
+        slug:
+          type: string
+        avatar_urls:
+          type: object
+          description: Avatar URLs for the author, keyed by pixel size.
+        _links:
+          type: object

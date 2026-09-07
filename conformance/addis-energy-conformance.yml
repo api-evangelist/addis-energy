@@ -1,0 +1,105 @@
+generated: '2026-09-07'
+method: probed
+source: derived from openapi/ and live responses observed at https://addisenergy.com/wp-json/ on 2026-09-07; compliance claims searched across the full addisenergy.com site
+description: >-
+  Standards conformance for the WordPress core REST surface behind addisenergy.com. Everything
+  asserted here was verified against a live response or the site's own published route index.
+  Addis Energy publishes no compliance programme, no certifications and no trust center, so NO
+  Compliance pointer is wired in apis.yml — an honest absence.
+conformance:
+- id: rest
+  name: REST over HTTP/JSON
+  conforms: true
+  evidence: >-
+    Resource-oriented routes under https://addisenergy.com/wp-json/wp/v2/, JSON request and
+    response bodies, HTTP verbs carrying semantics, and an `Allow: GET` header on the anonymous
+    collection. Observed 2026-09-07.
+- id: rfc8288
+  name: RFC 8288 Web Linking
+  conforms: true
+  evidence: >-
+    `Link: <https://addisenergy.com/wp-json/wp/v2/posts?per_page=1&page=2>; rel="next"` returned
+    on GET /wp/v2/posts?per_page=1, HTTP 200, 2026-09-07.
+- id: hal-style-links
+  name: Hypermedia link relations in-body
+  conforms: true
+  evidence: >-
+    Every collection and item object carries a `_links` member with self/collection/about/author/
+    replies/wp:attachment relations, and `_embed` inlines them into `_embedded`. This is WordPress's
+    own HAL-flavoured convention, not strict HAL+JSON.
+- id: cors
+  name: Cross-Origin Resource Sharing
+  conforms: true
+  evidence: >-
+    `Access-Control-Expose-Headers: X-WP-Total, X-WP-TotalPages, Link` and
+    `Access-Control-Allow-Headers: Authorization, X-WP-Nonce, Content-Disposition, Content-MD5,
+    Content-Type` with `Vary: Origin`. Observed 2026-09-07.
+- id: oembed
+  name: oEmbed 1.0
+  conforms: true
+  evidence: >-
+    /wp-json/oembed/1.0/embed returned HTTP 200 for a site URL and 404 `oembed_invalid_url` for a
+    foreign URL on 2026-09-07. Both json and xml response formats are advertised in the route
+    index arg schema.
+- id: rss2
+  name: RSS 2.0
+  conforms: true
+  evidence: >-
+    https://addisenergy.com/feed/ returned HTTP 200, content-type application/rss+xml, 23,740
+    bytes, on 2026-09-07.
+- id: rfc9457
+  name: RFC 9457 Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    Errors are returned as `application/json` with WordPress's own {code, message, data.status}
+    envelope, not `application/problem+json` with type/title/detail/instance. Verified across five
+    live 4xx responses on 2026-09-07. See errors/addis-energy-problem-types.yml.
+- id: idempotency
+  name: Idempotency-Key request replay protection
+  conforms: false
+  applicable: false
+  evidence: >-
+    Not applicable — the anonymously reachable surface is entirely GET, so there is no request to
+    replay. See conventions/addis-energy-conventions.yml (idempotency.coverage: na).
+- id: pagination
+  name: Documented, signalled pagination
+  conforms: true
+  evidence: >-
+    page/per_page parameters with server-published bounds (1..100), plus X-WP-Total and
+    X-WP-TotalPages response headers exposed cross-origin. Overrun returns 400
+    rest_post_invalid_page_number rather than an empty page. Verified 2026-09-07.
+- id: oauth2
+  name: OAuth 2.0
+  conforms: false
+  evidence: >-
+    /.well-known/oauth-authorization-server returned 404 on 2026-09-07. The only authentication
+    method the server advertises is WordPress application passwords (HTTP Basic).
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence: /.well-known/openid-configuration returned 404 on 2026-09-07.
+- id: rfc9116
+  name: RFC 9116 security.txt
+  conforms: false
+  evidence: /.well-known/security.txt returned 404 on both addisenergy.com and www.addisenergy.com on 2026-09-07.
+- id: rfc8594
+  name: RFC 8594 Sunset header
+  conforms: false
+  evidence: No Sunset or Deprecation header observed on any response, and no deprecation policy is published.
+domain_standard:
+  applicable: false
+  detail: >-
+    Addis Energy's market is subsurface energy and industrial ammonia production. Its public
+    machine-readable surface is a general-purpose content API, not an energy-sector data interface,
+    so no domain standard applies: nothing here speaks CIM/IEC 61968, OpenADR, Green Button,
+    WITSML, PPDM, ISO 15926, or any OGC surface. Probed for an OGC surface only where evidence
+    could point — the site names no WMS/WFS/WCS/WMTS/CSW endpoint and exposes no geo, gis, maps or
+    data subdomain — and found none. This is a reward-only check; recording it as not-applicable
+    rather than inventing a conformance.
+compliance:
+  certifications: []
+  programme_published: false
+  trust_center: null
+  detail: >-
+    No SOC 2, ISO 27001, PCI, HIPAA or FedRAMP claim appears anywhere on addisenergy.com, and no
+    trust center exists. probe-security-programs.py returned vdp=none trust=none on 2026-09-07.

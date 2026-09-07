@@ -1,0 +1,129 @@
+openapi: 3.2.0
+info:
+  title: Addis Energy oEmbed API
+  version: wp/v2
+  description: Public oEmbed 1.0 provider endpoint for addisenergy.com URLs, returning embeddable rich metadata
+    — title, author, thumbnail and iframe HTML — for any post or page on the site. Verified live (HTTP 200) on 2026-09-07.
+  contact:
+    name: Addis Energy
+    url: https://addisenergy.com/contact/
+  x-derived-from: https://addisenergy.com/wp-json/ route index (218 routes across 9 namespaces, captured 2026-09-07)
+  x-derived-on: '2026-09-07'
+  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and
+    no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every
+    path, parameter and error shape here was read from the server's own published route-index document and verified
+    against live anonymous responses on 2026-09-07 — nothing is invented.
+servers:
+- url: https://addisenergy.com/wp-json
+  description: Addis Energy WordPress REST API
+tags:
+- name: oEmbed
+  description: oEmbed 1.0 provider endpoint for addisenergy.com URLs.
+paths:
+  /oembed/1.0/embed:
+    get:
+      operationId: getOEmbed
+      summary: Get oEmbed metadata for a URL
+      description: Return oEmbed 1.0 metadata for an addisenergy.com post or page URL. Supports `json` and `xml`
+        response formats.
+      tags:
+      - oEmbed
+      parameters:
+      - name: format
+        in: query
+        schema:
+          type: string
+          default: json
+      - name: maxwidth
+        in: query
+        schema:
+          type: string
+          default: 600
+      - name: url
+        in: query
+        description: The URL of the resource for which to fetch oEmbed data.
+        schema:
+          type: string
+          format: uri
+        required: true
+      responses:
+        '200':
+          description: oEmbed metadata for the requested URL.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OEmbedResponse'
+        '404':
+          description: The URL does not belong to a resource on this site.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+components:
+  schemas:
+    WPError:
+      type: object
+      description: The WordPress REST error envelope returned on every 4xx/5xx. Observed live on 2026-09-07.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug, e.g. rest_post_invalid_page_number.
+          examples:
+          - rest_no_route
+        message:
+          type: string
+          description: Human-readable message.
+          examples:
+          - No route was found matching the URL and request method.
+        data:
+          type: object
+          description: Error detail; always carries the HTTP status.
+          properties:
+            status:
+              type: integer
+              examples:
+              - 404
+      required:
+      - code
+      - message
+      - data
+    OEmbedResponse:
+      type: object
+      description: An oEmbed 1.0 rich response.
+      properties:
+        version:
+          type: string
+          examples:
+          - '1.0'
+        provider_name:
+          type: string
+          examples:
+          - ADDIS ENERGY
+        provider_url:
+          type: string
+          format: uri
+        author_name:
+          type: string
+        author_url:
+          type: string
+          format: uri
+        title:
+          type: string
+        type:
+          type: string
+          examples:
+          - rich
+        width:
+          type: integer
+        height:
+          type: integer
+        html:
+          type: string
+          description: The embeddable iframe markup.
+        thumbnail_url:
+          type: string
+          format: uri
+        thumbnail_width:
+          type: integer
+        thumbnail_height:
+          type: integer

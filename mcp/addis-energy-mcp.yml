@@ -1,0 +1,67 @@
+generated: '2026-09-07'
+method: derived
+source: derived from openapi/ in this repo; searched for a published server and found none
+status: candidate
+description: >-
+  Addis Energy ships NO Model Context Protocol server — not remote, not stdio, not in any registry.
+  This file is an API-Evangelist-derived CANDIDATE tool list showing what an MCP server over the
+  public read surface would expose if anyone built one. It is not a server, it does not run, and NO
+  MCPServer pointer is wired in apis.yml. Do not read this as an agent surface Addis Energy
+  provides.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: none
+  verified: derived
+  detail: >-
+    Searched npm, PyPI, GitHub and the full addisenergy.com site on 2026-09-07 for a hosted or
+    packaged MCP server and found nothing — the company has no GitHub organization
+    (https://github.com/addisenergy returns 404) and publishes no developer material. No endpoint
+    URL is recorded here because guessing one would be worse than recording none.
+search_evidence:
+- url: https://github.com/addisenergy
+  status: 404
+- url: https://registry.npmjs.org/-/v1/search?text=addis-energy
+  status: 200
+  result: no first-party package
+- url: https://addisenergy.com/.well-known/ai-plugin.json
+  status: 404
+candidate_tools:
+- name: list_addis_energy_news
+  description: List Addis Energy news and press-coverage posts, newest first, optionally filtered by category or date window.
+  rest: [listPosts]
+  confidence: high
+- name: get_addis_energy_news_item
+  description: Retrieve one Addis Energy news post by id, with author and terms inlined.
+  rest: [getPost]
+  confidence: high
+- name: list_addis_energy_pages
+  description: List the static pages of addisenergy.com — Home, Technology, News, Careers, Contact, Privacy Policy, Terms.
+  rest: [listPages]
+  confidence: high
+- name: get_addis_energy_page
+  description: Retrieve the full content of one addisenergy.com page by id.
+  rest: [getPage]
+  confidence: high
+- name: search_addis_energy
+  description: Search across every post and page on addisenergy.com and return id, title, url and subtype.
+  rest: [search]
+  confidence: high
+- name: list_addis_energy_media
+  description: List media library assets — photography, diagrams, headshots and press images — with their source URLs.
+  rest: [listMedia]
+  confidence: high
+- name: list_addis_energy_categories
+  description: List the categories that classify Addis Energy content, with post counts.
+  rest: [listCategories]
+  confidence: high
+- name: describe_addis_energy_api
+  description: Read the self-describing route index, content types and taxonomies for addisenergy.com.
+  rest: [getRouteIndex, listTypes, listTaxonomies]
+  confidence: high
+input_schema_note: >-
+  Each candidate tool would inherit its input schema directly from the backing OpenAPI operation's
+  parameters in openapi/, which were themselves read from the server's own published arg schemas.
+  Nothing here is invented, but nothing here is deployed either.

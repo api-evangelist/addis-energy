@@ -1,0 +1,112 @@
+generated: '2026-09-07'
+method: probed
+source: live 4xx responses observed against https://addisenergy.com/wp-json/ on 2026-09-07, cross-checked against the route index arg constraints
+description: >-
+  Error catalog for the WordPress core REST API behind addisenergy.com. The API does NOT use RFC
+  9457 application/problem+json. It returns its own long-standing JSON envelope on
+  `application/json` — a machine-readable `code` slug, a human `message`, and a `data` object that
+  always carries the HTTP `status`. Every entry below was either observed live or is a documented
+  WordPress core code reachable from the constraints published in this site's own route index.
+format: wordpress-rest-error
+media_type: application/json
+rfc9457: false
+envelope:
+  fields:
+  - name: code
+    type: string
+    description: Machine-readable error slug. This is the field to branch on.
+  - name: message
+    type: string
+    description: Human-readable message. Localized; do not branch on it.
+  - name: data
+    type: object
+    description: Detail object. Always carries `status`; parameter errors add `params` and `details`.
+  - name: data.status
+    type: integer
+    description: The HTTP status, repeated inside the body.
+  example:
+    code: rest_no_route
+    message: No route was found matching the URL and request method.
+    data:
+      status: 404
+problem_types:
+- code: rest_no_route
+  status: 404
+  title: No matching route
+  observed: true
+  evidence: GET https://addisenergy.com/wp-json/wp/v2/nonexistent
+  remediation: >-
+    Re-read the route index at https://addisenergy.com/wp-json/ — it enumerates every registered
+    route and is the authoritative list.
+- code: rest_post_invalid_id
+  status: 404
+  title: Invalid post ID
+  observed: true
+  evidence: 'GET https://addisenergy.com/wp-json/wp/v2/posts/99999999 returned 404 {"code":"rest_post_invalid_id","message":"Invalid post ID.","data":{"status":404}}'
+  applies_to:
+  - getPost
+  - getPage
+  - getMediaItem
+  remediation: List the collection first and use an id it returns.
+- code: rest_post_invalid_page_number
+  status: 400
+  title: Page number exceeds available pages
+  observed: true
+  evidence: 'GET https://addisenergy.com/wp-json/wp/v2/posts?page=9999 returned 400 "The page number requested is larger than the number of pages available."'
+  applies_to:
+  - listPosts
+  - listPages
+  - listMedia
+  - listCategories
+  - listUsers
+  - search
+  remediation: >-
+    Read `X-WP-TotalPages` from the first response and stop paging when `page` would exceed it.
+- code: rest_invalid_param
+  status: 400
+  title: Invalid parameter
+  observed: true
+  evidence: >-
+    GET https://addisenergy.com/wp-json/wp/v2/posts?per_page=500 returned 400 with
+    data.params.per_page "per_page must be between 1 (inclusive) and 100 (inclusive)" and
+    data.details.per_page.code "rest_out_of_bounds" — the envelope carries per-parameter detail.
+  observed_constraint: >-
+    `per_page` is bounded 1..100 by the server's own published arg schema; values outside the
+    bound are rejected rather than clamped.
+  remediation: >-
+    Validate against the `args` schemas in the route index before sending; the OpenAPI files in
+    openapi/ carry those same bounds.
+- code: rest_forbidden
+  status: 401
+  title: Authentication required
+  observed: true
+  evidence: GET https://addisenergy.com/wp-json/wp/v2/settings returned 401
+  remediation: >-
+    Not remediable by a third party. The route requires an administrator application password
+    which Addis Energy does not issue publicly. Stay on the anonymous read surface.
+- code: rest_user_cannot_view
+  status: 401
+  title: Cannot view this user
+  applies_to:
+  - getUser
+  remediation: Only authors with published posts are anonymously visible.
+- code: rest_comment_disabled
+  status: 403
+  title: Comments are disabled
+  observed: true
+  evidence: GET https://addisenergy.com/wp-json/wp/v2/comments returned 403
+  remediation: None. Comments are disabled site-wide; the collection is not part of the public surface.
+- code: wpcf7_forbidden
+  status: 403
+  title: Contact forms not accessible
+  observed: true
+  evidence: GET https://addisenergy.com/wp-json/contact-form-7/v1/contact-forms returned 403
+  remediation: None. Form definitions are administrator-only.
+- code: oembed_invalid_url
+  status: 404
+  title: URL is not a resource on this site
+  observed: true
+  evidence: 'GET https://addisenergy.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fexample.com%2F returned 404 {"code":"oembed_invalid_url","message":"Not Found","data":{"status":404}}'
+  applies_to:
+  - getOEmbed
+  remediation: Pass a URL under https://addisenergy.com/ that resolves to a published post or page.

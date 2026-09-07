@@ -1,0 +1,31 @@
+generated: '2026-09-07'
+method: generated
+source: openapi/ in this repo plus conventions/, authentication/, errors/ and data-model/
+description: >-
+  Packaged Agent Skills for the public read surface behind addisenergy.com. Addis Energy publishes
+  no skills, no AGENTS.md and no llms.txt of its own — searched 2026-09-07 and found none — so
+  these are authored by API Evangelist and grounded in operationIds that exist in openapi/ and were
+  verified live against the API. Every skill is read-only; there is no write flow to package.
+skills:
+- name: addis-energy-track-company-news
+  file: addis-energy-track-company-news.md
+  api: addis-energy:addis-energy-posts-api
+  operations: [listPosts, getPost, listCategories]
+  summary: >-
+    Walk the 13-post news and press-coverage archive, filter by category or date, and resolve each
+    item to full text with _embed.
+- name: addis-energy-harvest-press-assets
+  file: addis-energy-harvest-press-assets.md
+  api: addis-energy:addis-energy-media-api
+  operations: [listMedia, getMediaItem, listPosts]
+  summary: >-
+    Enumerate the 73-item media library with alt text, MIME types and original source URLs, and tie
+    each asset back to the post it illustrates.
+- name: addis-energy-map-the-api-surface
+  file: addis-energy-map-the-api-surface.md
+  api: addis-energy:addis-energy-discovery-api
+  operations: [getRouteIndex, getWpV2Namespace, listTypes, listTaxonomies, listStatuses]
+  summary: >-
+    Use the self-describing route index to discover every callable route without documentation, and
+    to separate the anonymous read surface from the administrator-only plumbing.
+skill_count: 3

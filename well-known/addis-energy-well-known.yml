@@ -1,0 +1,63 @@
+generated: '2026-09-07'
+method: probed
+source: live HTTPS probes of every host this record knows
+description: >-
+  Probe of the RFC 8615 /.well-known/ namespace on every host in this record. Addis Energy runs a
+  single WordPress origin at addisenergy.com (www.addisenergy.com 301s to it), which is also the
+  only API baseURL host and the only OpenAPI servers[] host — there is no separate docs, console or
+  API host to probe. Every named path returned 404 with an HTML body from the WordPress catch-all.
+  No /.well-known/ document of any kind is served, so NO WellKnown or SecurityTxt pointer is wired
+  in apis.yml — this file records a verified absence, not a presence.
+hosts:
+- host: addisenergy.com
+  note: Registrable domain, corporate website, API baseURL host and OpenAPI servers[] host.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    file: null
+- host: www.addisenergy.com
+  note: Redirects (301) to addisenergy.com; probed independently for completeness.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+summary:
+  documents_served: 0
+  hosts_probed: 2
+  paths_probed: 14

@@ -1,0 +1,38 @@
+generated: '2026-09-07'
+method: probed
+source: response headers observed on live anonymous requests to https://addisenergy.com/wp-json/ on 2026-09-07
+description: >-
+  Addis Energy publishes no rate-limit policy — there is no developer portal, terms-of-use API
+  clause, or documentation page stating a limit. The live responses carry no rate-limit signal
+  either: no X-RateLimit-*, no RateLimit-* (RFC 9331 draft), no Retry-After. This is an honest zero,
+  measured rather than assumed. Any limiting that exists is imposed silently by the SiteGround
+  origin / Apache layer and is not observable to a client until it fires.
+limit_count: 0
+documented: false
+docs: null
+observed_headers:
+  present:
+  - X-WP-Total
+  - X-WP-TotalPages
+  - Link
+  - Access-Control-Expose-Headers
+  - Vary
+  absent:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  - RateLimit
+  - RateLimit-Policy
+  - Retry-After
+  evidence: >-
+    GET https://addisenergy.com/wp-json/wp/v2/posts?per_page=1 (HTTP 200, 2026-09-07) returned
+    x-powered-by, x-robots-tag, x-content-type-options, access-control-expose-headers,
+    access-control-allow-headers, x-wp-total, x-wp-totalpages, link, vary, content-type, date and
+    server — and nothing rate-limit shaped.
+exhaustion_status: unknown
+limits: []
+guidance: >-
+  Treat the surface as unmetered but fragile. It is a marketing site's CMS, not a product API: the
+  whole corpus is 13 posts, 7 pages, 73 media items and 20 searchable objects, so a complete crawl
+  at per_page=100 is four requests. Cache aggressively and do not poll — the RSS feed at
+  https://addisenergy.com/feed/ is the cheaper change signal.

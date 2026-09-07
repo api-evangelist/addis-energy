@@ -1,0 +1,305 @@
+openapi: 3.2.0
+info:
+  title: Addis Energy Discovery API
+  version: wp/v2
+  description: Public, unauthenticated discovery metadata for addisenergy.com — the self-describing route index
+    (218 routes across 9 namespaces at capture), the registered content types and taxonomies, and the publication
+    statuses. This is the surface that makes the rest of the API machine-readable in the absence of any published
+    documentation.
+  contact:
+    name: Addis Energy
+    url: https://addisenergy.com/contact/
+  x-derived-from: https://addisenergy.com/wp-json/ route index (218 routes across 9 namespaces, captured 2026-09-07)
+  x-derived-on: '2026-09-07'
+  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and
+    no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every
+    path, parameter and error shape here was read from the server's own published route-index document and verified
+    against live anonymous responses on 2026-09-07 — nothing is invented.
+servers:
+- url: https://addisenergy.com/wp-json
+  description: Addis Energy WordPress REST API
+tags:
+- name: Discovery
+  description: Self-describing route index and schema metadata.
+paths:
+  /:
+    get:
+      operationId: getRouteIndex
+      summary: Get the API root discovery document
+      description: 'Retrieve the self-describing root index: site identity, registered namespaces, supported authentication
+        methods, and every registered route with its argument schemas.'
+      tags:
+      - Discovery
+      parameters:
+      - name: context
+        in: query
+        schema:
+          type: string
+          default: view
+      responses:
+        '200':
+          description: The root discovery document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteIndex'
+        '400': &id001
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404': &id002
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+  /wp/v2:
+    get:
+      operationId: getWpV2Namespace
+      summary: Get the wp/v2 namespace index
+      description: Retrieve the route index scoped to the WordPress core `wp/v2` namespace.
+      tags:
+      - Discovery
+      parameters:
+      - name: context
+        in: query
+        schema:
+          type: string
+          default: view
+      - name: namespace
+        in: query
+        schema:
+          type: string
+          default: wp/v2
+      responses:
+        '200':
+          description: The wp/v2 namespace index.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteIndex'
+        '400': *id001
+        '404': *id002
+  /wp/v2/types:
+    get:
+      operationId: listTypes
+      summary: List content types
+      description: Retrieve the registered post types. Verified live on 2026-09-07 as WordPress core only — post,
+        page, attachment, nav_menu_item, wp_block, wp_template, wp_template_part, wp_global_styles, wp_navigation,
+        wp_font_family, wp_font_face. Addis Energy registers no custom post type.
+      tags:
+      - Discovery
+      parameters:
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      responses:
+        '200':
+          description: The registered content types, keyed by slug.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400': *id001
+        '404': *id002
+  /wp/v2/types/{type}:
+    get:
+      operationId: getType
+      summary: Get a content type
+      description: Retrieve a single registered post type and its capabilities.
+      tags:
+      - Discovery
+      parameters:
+      - name: type
+        in: path
+        required: true
+        description: An alphanumeric identifier for the post type.
+        schema:
+          type: string
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      responses:
+        '200':
+          description: A single content type.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400': *id001
+        '404': *id002
+  /wp/v2/taxonomies:
+    get:
+      operationId: listTaxonomies
+      summary: List taxonomies
+      description: Retrieve the registered taxonomies. Verified live on 2026-09-07 as WordPress core only — category,
+        post_tag, nav_menu, wp_pattern_category.
+      tags:
+      - Discovery
+      parameters:
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: type
+        in: query
+        description: Limit results to taxonomies associated with a specific post type.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The registered taxonomies, keyed by slug.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400': *id001
+        '404': *id002
+  /wp/v2/taxonomies/{taxonomy}:
+    get:
+      operationId: getTaxonomy
+      summary: Get a taxonomy
+      description: Retrieve a single registered taxonomy.
+      tags:
+      - Discovery
+      parameters:
+      - name: taxonomy
+        in: path
+        required: true
+        description: An alphanumeric identifier for the taxonomy.
+        schema:
+          type: string
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      responses:
+        '200':
+          description: A single taxonomy.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400': *id001
+        '404': *id002
+  /wp/v2/statuses:
+    get:
+      operationId: listStatuses
+      summary: List publication statuses
+      description: Retrieve the publication statuses visible to the caller. Anonymous callers see the public statuses
+        only.
+      tags:
+      - Discovery
+      parameters:
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      responses:
+        '200':
+          description: The publication statuses, keyed by slug.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400': *id001
+        '404': *id002
+components:
+  schemas:
+    WPError:
+      type: object
+      description: The WordPress REST error envelope returned on every 4xx/5xx. Observed live on 2026-09-07.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug, e.g. rest_post_invalid_page_number.
+          examples:
+          - rest_no_route
+        message:
+          type: string
+          description: Human-readable message.
+          examples:
+          - No route was found matching the URL and request method.
+        data:
+          type: object
+          description: Error detail; always carries the HTTP status.
+          properties:
+            status:
+              type: integer
+              examples:
+              - 404
+      required:
+      - code
+      - message
+      - data
+    RouteIndex:
+      type: object
+      description: The WordPress REST API root discovery document.
+      properties:
+        name:
+          type: string
+          examples:
+          - ADDIS ENERGY
+        description:
+          type: string
+        url:
+          type: string
+          format: uri
+        home:
+          type: string
+          format: uri
+          examples:
+          - https://addisenergy.com
+        gmt_offset:
+          type: number
+        timezone_string:
+          type: string
+        namespaces:
+          type: array
+          items:
+            type: string
+          description: 'Registered REST namespaces. Observed: oembed/1.0, contact-form-7/v1, duplicator/v1, siteground-optimizer/v1,
+            code-snippets/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1, wp-abilities/v1.'
+        authentication:
+          type: object
+          description: 'Supported authentication methods. Observed: application-passwords, with its authorization
+            endpoint.'
+        routes:
+          type: object
+          description: Every registered route, keyed by route pattern, with its methods, args and endpoint schemas.
+        _links:
+          type: object

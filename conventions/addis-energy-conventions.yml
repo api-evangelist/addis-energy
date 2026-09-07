@@ -1,0 +1,143 @@
+generated: '2026-09-07'
+method: probed
+source: https://addisenergy.com/wp-json/ route index + live anonymous responses observed 2026-09-07; cross-linked to authentication/, errors/, lifecycle/ and rate-limits/ in this repo
+description: >-
+  Cross-cutting runtime semantics for the WordPress core REST API behind addisenergy.com. Addis
+  Energy publishes no API documentation, so every convention here was read off the server itself —
+  its self-describing route index and its live responses — rather than off a docs page.
+auth:
+  style: none
+  detail: >-
+    The public surface is anonymous. The write half of the same routes uses HTTP Basic with a
+    WordPress application password that only a site administrator can mint. See
+    authentication/addis-energy-authentication.yml.
+  cross_ref: authentication/addis-energy-authentication.yml
+idempotency:
+  coverage: na
+  supported: false
+  scope: []
+  header: null
+  retention: null
+  detail: >-
+    There is no anonymously reachable mutating operation on this surface, so replay protection has
+    nothing to protect. Every operation in openapi/ is a GET. The write methods that exist on the
+    same wp/v2 routes are administrator-only and are not part of the public API; WordPress core
+    ships no Idempotency-Key mechanism for them either. `na` rather than `none`: an honest
+    not-applicable, because the API has no write surface a third party can reach.
+  cross_ref: errors/addis-energy-problem-types.yml
+reversibility:
+  coverage: na
+  detail: >-
+    Read-only API. There is no anonymously reachable action to take, therefore no action to take
+    back. No cancel/refund/void/restore operation exists or is needed. This is the same
+    not-applicable as idempotency and dry_run_mode, and for the same reason: the public surface is
+    entirely GET.
+  write_surfaces: []
+  reversal_operations: []
+  windows: []
+dry_run_mode:
+  supported: na
+  detail: Read-only API — nothing to rehearse.
+pagination:
+  style: page-number
+  params:
+  - name: page
+    default: 1
+    description: 1-based page index.
+  - name: per_page
+    default: 10
+    min: 1
+    max: 100
+    description: >-
+      Bounded by the server's own published arg schema; out-of-bound values are REJECTED with
+      rest_invalid_param, not clamped. Verified live on 2026-09-07.
+  - name: offset
+    description: Alternative cursor; offsets the result set by a raw record count.
+  response_signalling:
+    headers:
+    - name: X-WP-Total
+      description: Total matching objects across all pages.
+    - name: X-WP-TotalPages
+      description: Total pages at the current per_page.
+    - name: Link
+      description: RFC 8288 link relations — rel="next" and rel="prev".
+    cors_exposed: true
+    cors_detail: >-
+      Access-Control-Expose-Headers lists X-WP-Total, X-WP-TotalPages and Link, so a browser
+      client can read the paging signal cross-origin. Verified live 2026-09-07.
+  overrun_behaviour: >-
+    Requesting a page beyond X-WP-TotalPages returns 400 rest_post_invalid_page_number rather than
+    an empty array. Page until the header says stop; do not probe for an empty page.
+field_selection:
+  supported: true
+  param: _fields
+  description: >-
+    Comma-separated list of top-level fields to return, e.g. `_fields=id,date,slug,title,link`.
+    This is the sparse-fieldset mechanism and it materially shrinks responses — post objects carry
+    fully rendered HTML content by default.
+  embedding:
+    param: _embed
+    description: >-
+      Inlines linked resources (author, featured media, terms) into an `_embedded` object,
+      collapsing what would otherwise be several follow-up requests.
+  context:
+    param: context
+    values: [view, embed, edit]
+    default: view
+    note: >-
+      `edit` requires authentication. Anonymous callers are confined to `view` and `embed`; this
+      is what keeps author emails and post meta off the public surface.
+metadata:
+  supported: false
+  detail: No custom post meta is registered for REST exposure. `meta` is absent from anonymous responses.
+request_tracing:
+  supported: false
+  detail: >-
+    No request-id header is issued. Responses carry no correlation identifier of any kind — only
+    Date and Server. There is nothing to quote to support, and there is no support channel for the
+    API in any case.
+versioning:
+  style: path-namespace
+  current: wp/v2
+  detail: >-
+    Version lives in the route namespace, not a header or query parameter. The live index
+    advertises 9 namespaces: oembed/1.0, contact-form-7/v1, duplicator/v1,
+    siteground-optimizer/v1, code-snippets/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1,
+    wp-abilities/v1. Only wp/v2 and oembed/1.0 are anonymously usable.
+  cross_ref: lifecycle/addis-energy-lifecycle.yml
+error_envelope:
+  media_type: application/json
+  rfc9457: false
+  shape: '{ code, message, data: { status, params?, details? } }'
+  branch_on: code
+  cross_ref: errors/addis-energy-problem-types.yml
+rate_limit_signalling:
+  supported: false
+  detail: >-
+    No X-RateLimit-*, no RateLimit-*, no Retry-After on any observed response. An agent gets no
+    runtime budget signal and cannot back off intelligently — it can only be cut off.
+  cross_ref: rate-limits/addis-energy-rate-limits.yml
+caching:
+  etag: false
+  last_modified: false
+  cache_control: null
+  detail: >-
+    No validator headers were observed on the JSON responses, so conditional requests are not
+    available. Clients should cache on their own clock; the RSS feed at
+    https://addisenergy.com/feed/ is the cheapest change signal for the news corpus.
+cors:
+  enabled: true
+  detail: >-
+    Access-Control-Allow-Headers advertises Authorization, X-WP-Nonce, Content-Disposition,
+    Content-MD5 and Content-Type; `Vary: Origin` is set. Browser clients can read the surface
+    directly.
+content_negotiation:
+  formats: [json]
+  oembed_formats: [json, xml]
+  detail: The oEmbed endpoint accepts a `format` parameter of json or xml; everything else is JSON only.
+robots:
+  x_robots_tag: noindex
+  detail: >-
+    Every wp-json response carries `X-Robots-Tag: noindex`. The API is public and unauthenticated
+    but the operator has asked search engines not to index it — read this as "reachable, not
+    promoted".

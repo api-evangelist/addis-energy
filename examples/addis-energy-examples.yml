@@ -1,0 +1,111 @@
+generated: '2026-09-07'
+method: probed
+source: every request below was executed anonymously against https://addisenergy.com/wp-json/ on 2026-09-07; the responses are the real ones
+description: >-
+  Working, copy-pasteable examples for the WordPress REST surface behind addisenergy.com. Addis
+  Energy publishes no documentation and no quickstart, so these are the only worked examples that
+  exist for this API. Every one was run and its status recorded. No credential is required for any
+  of them.
+base_url: https://addisenergy.com/wp-json
+auth_required: false
+examples:
+- name: List the newest news posts
+  operationId: listPosts
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/posts?per_page=5&_fields=id,date,slug,title,link,categories"'
+  status: 200
+  response_headers:
+    X-WP-Total: '13'
+    X-WP-TotalPages: '3'
+  note: >-
+    Always use _fields. Without it each post carries fully rendered HTML content and the response
+    balloons for no reason.
+- name: Walk the whole news archive in one request
+  operationId: listPosts
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/posts?per_page=100&_fields=id,date,slug,title,link,categories"'
+  status: 200
+  note: The archive is 13 posts. One request at per_page=100 is a complete crawl.
+- name: Fetch one post with its author and terms inlined
+  operationId: getPost
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/posts/507?_embed"'
+  status: 200
+  note: >-
+    _embed collapses the author, featured-media and term lookups into an `_embedded` object,
+    turning four round trips into one.
+- name: Filter the archive to press coverage only
+  operationId: listPosts
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/posts?categories=7&per_page=100&_fields=id,date,title,link"'
+  status: 200
+  note: 'Category 7 is Press Coverage (11 posts). Category 8 is Blog (2 posts). Verified 2026-09-07.'
+- name: Fetch only posts published since a date
+  operationId: listPosts
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/posts?after=2025-06-01T00:00:00&_fields=id,date,title,link"'
+  status: 200
+  note: ISO 8601, site timezone. Pair with `before` to window a range.
+- name: List the site's static pages
+  operationId: listPages
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/pages?per_page=100&_fields=id,slug,title,link"'
+  status: 200
+  response_headers:
+    X-WP-Total: '7'
+  note: 'Observed slugs: sample-page (Home), technology, blog (News), careers, contact, privacy-policy, terms-conditions.'
+- name: List the media library
+  operationId: listMedia
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/media?per_page=100&_fields=id,slug,alt_text,mime_type,source_url"'
+  status: 200
+  response_headers:
+    X-WP-Total: '73'
+  note: >-
+    source_url is the original file; media_details.sizes carries the generated variants if you
+    need a smaller one.
+- name: Read the category taxonomy
+  operationId: listCategories
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/categories?_fields=id,name,slug,count"'
+  status: 200
+  response_body_excerpt: '[{"id":7,"name":"Press Coverage","slug":"press-coverage","count":11},{"id":8,"name":"Blog","slug":"blog","count":2},{"id":1,"name":"Uncategorized","slug":"uncategorized","count":0}]'
+- name: Search across posts and pages
+  operationId: search
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/search?search=ammonia&per_page=20"'
+  status: 200
+  note: Returns id/title/url/type/subtype. Resolve subtype `post` to /wp/v2/posts/{id} and `page` to /wp/v2/pages/{id}.
+- name: Read the self-describing route index
+  operationId: getRouteIndex
+  request: 'curl -s "https://addisenergy.com/wp-json/"'
+  status: 200
+  note: >-
+    218 routes across 9 namespaces at capture. This document is the substitute for the
+    documentation Addis Energy does not publish — it carries every route, method and argument
+    schema.
+- name: Get oEmbed metadata for a page
+  operationId: getOEmbed
+  request: 'curl -s "https://addisenergy.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Faddisenergy.com%2F"'
+  status: 200
+error_examples:
+- name: Unknown route
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/nonexistent"'
+  status: 404
+  response_body: '{"code":"rest_no_route","message":"No route was found matching the URL and request method.","data":{"status":404}}'
+- name: Unknown post id
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/posts/99999999"'
+  status: 404
+  response_body: '{"code":"rest_post_invalid_id","message":"Invalid post ID.","data":{"status":404}}'
+- name: per_page above the published bound
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/posts?per_page=500"'
+  status: 400
+  response_body: '{"code":"rest_invalid_param","message":"Invalid parameter(s): per_page","data":{"status":400,"params":{"per_page":"per_page must be between 1 (inclusive) and 100 (inclusive)"}}}'
+  note: Out-of-bound values are rejected, not clamped.
+- name: Paging past the end
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/posts?page=9999"'
+  status: 400
+  response_body: '{"code":"rest_post_invalid_page_number","message":"The page number requested is larger than the number of pages available.","data":{"status":400}}'
+- name: Authenticated-only route
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/settings"'
+  status: 401
+  response_body: '{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}}'
+- name: Comments are disabled site-wide
+  request: 'curl -s "https://addisenergy.com/wp-json/wp/v2/comments"'
+  status: 403
+  response_body: '{"code":"rest_comment_disabled","message":"Comments are disabled.","data":{"status":403}}'
+- name: oEmbed for a foreign URL
+  request: 'curl -s "https://addisenergy.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fexample.com%2F"'
+  status: 404
+  response_body: '{"code":"oembed_invalid_url","message":"Not Found","data":{"status":404}}'
