@@ -38,8 +38,8 @@ apis:
   name: Addis Energy Posts API
   image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
   description: >-
-    Public, unauthenticated read access to the Addis Energy news and press-coverage archive via the
-    WordPress core REST API. Verified live at 13 published posts across 3 categories on 2026-09-07.
+    Public, unauthenticated read access to the Addis Energy news and press-coverage archive via the WordPress
+    core REST API. Verified live at 13 published posts across 3 categories on 2026-09-07.
   humanURL: https://addisenergy.com/wp-json/
   baseURL: https://addisenergy.com/wp-json
   tags:
@@ -66,9 +66,8 @@ apis:
   name: Addis Energy Pages API
   image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
   description: >-
-    Public, unauthenticated read access to the static pages of addisenergy.com — Home, Technology,
-    News, Careers, Contact, Privacy Policy and Terms & Conditions. Verified live at 7 published
-    pages on 2026-09-07.
+    Public, unauthenticated read access to the static pages of addisenergy.com — Home, Technology, News,
+    Careers, Contact, Privacy Policy and Terms & Conditions. Verified live at 7 published pages on 2026-09-07.
   humanURL: https://addisenergy.com/wp-json/
   baseURL: https://addisenergy.com/wp-json
   tags:
@@ -95,9 +94,9 @@ apis:
   name: Addis Energy Media API
   image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
   description: >-
-    Public, unauthenticated read access to the media library behind addisenergy.com — site
-    photography, technology diagrams, team headshots and press assets with their generated size
-    variants. Verified live at 73 attachments on 2026-09-07.
+    Public, unauthenticated read access to the media library behind addisenergy.com — site photography,
+    technology diagrams, team headshots and press assets with their generated size variants. Verified
+    live at 73 attachments on 2026-09-07.
   humanURL: https://addisenergy.com/wp-json/
   baseURL: https://addisenergy.com/wp-json
   tags:
@@ -124,9 +123,9 @@ apis:
   name: Addis Energy Taxonomy API
   image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
   description: >-
-    Public, unauthenticated read access to the taxonomies that classify Addis Energy content — the
-    category taxonomy (Press Coverage, Blog, Uncategorized) and the post_tag taxonomy. Verified live
-    at 3 categories and 0 tags on 2026-09-07.
+    Public, unauthenticated read access to the taxonomies that classify Addis Energy content — the category
+    taxonomy (Press Coverage, Blog, Uncategorized) and the post_tag taxonomy. Verified live at 3 categories
+    and 0 tags on 2026-09-07.
   humanURL: https://addisenergy.com/wp-json/
   baseURL: https://addisenergy.com/wp-json
   tags:
@@ -153,10 +152,9 @@ apis:
   name: Addis Energy Users API
   image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
   description: >-
-    Public, unauthenticated read access to the public author records behind addisenergy.com — the
-    people credited on published news posts. Anonymous responses are limited to the WordPress view
-    context: no email addresses, roles or capabilities are exposed. Verified live at 2 authors on
-    2026-09-07.
+    Public, unauthenticated read access to the public author records behind addisenergy.com — the people
+    credited on published news posts. Anonymous responses are limited to the WordPress view context: no
+    email addresses, roles or capabilities are exposed. Verified live at 2 authors on 2026-09-07.
   humanURL: https://addisenergy.com/wp-json/
   baseURL: https://addisenergy.com/wp-json
   tags:
@@ -182,9 +180,8 @@ apis:
   name: Addis Energy Search API
   image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
   description: >-
-    Public, unauthenticated cross-content search over addisenergy.com — posts and pages together —
-    returning lightweight id / title / url / type / subtype records. Verified live at 20 searchable
-    objects on 2026-09-07.
+    Public, unauthenticated cross-content search over addisenergy.com — posts and pages together — returning
+    lightweight id / title / url / type / subtype records. Verified live at 20 searchable objects on 2026-09-07.
   humanURL: https://addisenergy.com/wp-json/
   baseURL: https://addisenergy.com/wp-json
   tags:
@@ -209,10 +206,10 @@ apis:
   name: Addis Energy Discovery API
   image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
   description: >-
-    Public, unauthenticated discovery metadata for addisenergy.com — the self-describing route index
-    (218 routes across 9 namespaces at capture), the registered content types and taxonomies, and
-    the publication statuses. This is the surface that makes the rest of the API machine-readable in
-    the absence of any published documentation.
+    Public, unauthenticated discovery metadata for addisenergy.com — the self-describing route index (218
+    routes across 9 namespaces at capture), the registered content types and taxonomies, and the publication
+    statuses. This is the surface that makes the rest of the API machine-readable in the absence of any
+    published documentation.
   humanURL: https://addisenergy.com/wp-json/
   baseURL: https://addisenergy.com/wp-json
   tags:
@@ -233,23 +230,16 @@ apis:
     url: conformance/addis-energy-conformance.yml
   - type: Lifecycle
     url: lifecycle/addis-energy-lifecycle.yml
-- aid: addis-energy:addis-energy-oembed-api
-  name: Addis Energy oEmbed API
-  image: https://addisenergy.com/wp-content/uploads/fbrfg/apple-touch-icon.png
-  description: >-
-    Public oEmbed 1.0 provider endpoint for addisenergy.com URLs, returning embeddable rich
-    metadata — title, author, thumbnail and iframe HTML — for any post or page on the site. Verified
-    live (HTTP 200) on 2026-09-07.
+- aid: addis-energy:addis-energy-o-embed-api
+  name: Addis Energy o Embed API
+  description: oEmbed 1.0 provider endpoint for addisenergy.com URLs.
   humanURL: https://addisenergy.com/wp-json/
   baseURL: https://addisenergy.com/wp-json
   tags:
-  - oEmbed
-  - Metadata
+  - o Embed
   properties:
   - type: OpenAPI
-    url: openapi/addis-energy-oembed-api-openapi.yml
-  - type: Overlay
-    url: overlays/addis-energy-oembed-api-overlay.yaml
+    url: openapi/addis-energy-o-embed-api-openapi.yml
   - type: Authentication
     url: authentication/addis-energy-authentication.yml
   - type: ErrorCatalog
@@ -264,6 +254,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/addis-energy-oembed-api-overlay.yaml
 - type: Website
   url: https://addisenergy.com/
 - type: About
