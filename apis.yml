@@ -236,6 +236,8 @@ apis:
   humanURL: https://addisenergy.com/wp-json/
   baseURL: https://addisenergy.com/wp-json
   tags:
+  - oEmbed
+  tags_raw:
   - o Embed
   properties:
   - type: OpenAPI
