@@ -2,18 +2,13 @@ openapi: 3.2.0
 info:
   title: Addis Energy Taxonomy API
   version: wp/v2
-  description: Public, unauthenticated read access to the taxonomies that classify Addis Energy content — the `category`
-    taxonomy (3 terms at capture, including Press Coverage) and the `post_tag` taxonomy (0 terms at capture) — via
-    the WordPress core REST API. Anonymous access is read-only.
+  description: Public, unauthenticated read access to the taxonomies that classify Addis Energy content — the `category` taxonomy (3 terms at capture, including Press Coverage) and the `post_tag` taxonomy (0 terms at capture) — via the WordPress core REST API. Anonymous access is read-only.
   contact:
     name: Addis Energy
     url: https://addisenergy.com/contact/
   x-derived-from: https://addisenergy.com/wp-json/ route index (218 routes across 9 namespaces, captured 2026-09-07)
   x-derived-on: '2026-09-07'
-  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and
-    no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every
-    path, parameter and error shape here was read from the server's own published route-index document and verified
-    against live anonymous responses on 2026-09-07 — nothing is invented.
+  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every path, parameter and error shape here was read from the server's own published route-index document and verified against live anonymous responses on 2026-09-07 — nothing is invented.
 servers:
 - url: https://addisenergy.com/wp-json
   description: Addis Energy WordPress REST API
@@ -131,13 +126,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Term'
-        '400': &id001
+        '400':
           description: Invalid parameter.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/WPError'
-        '404': &id002
+        '404':
           description: No route or resource matched the request.
           content:
             application/json:
@@ -174,14 +169,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Term'
-        '400': *id001
-        '404': *id002
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
   /wp/v2/tags:
     get:
       operationId: listTags
       summary: List tags
-      description: 'Retrieve the terms of the `post_tag` taxonomy. The route is served and returns 200, but was
-        verified empty (`X-WP-Total: 0`) on 2026-09-07 — Addis Energy classifies posts by category only.'
+      description: 'Retrieve the terms of the `post_tag` taxonomy. The route is served and returns 200, but was verified empty (`X-WP-Total: 0`) on 2026-09-07 — Addis Energy classifies posts by category only.'
       tags:
       - Taxonomy
       parameters:
@@ -287,8 +291,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Term'
-        '400': *id001
-        '404': *id002
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
   /wp/v2/tags/{id}:
     get:
       operationId: getTag
@@ -320,8 +334,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Term'
-        '400': *id001
-        '404': *id002
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
 components:
   schemas:
     WPError:

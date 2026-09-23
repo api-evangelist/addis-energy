@@ -2,19 +2,13 @@ openapi: 3.2.0
 info:
   title: Addis Energy Posts API
   version: wp/v2
-  description: 'Public, unauthenticated read access to the Addis Energy news and press-coverage archive (13 published
-    posts at capture, across 3 categories) via the WordPress core REST API. Anonymous access is read-only: the collection
-    answers `Allow: GET` without credentials. Write methods exist on the same routes but require WordPress application-password
-    authentication and are not part of the public surface.'
+  description: 'Public, unauthenticated read access to the Addis Energy news and press-coverage archive (13 published posts at capture, across 3 categories) via the WordPress core REST API. Anonymous access is read-only: the collection answers `Allow: GET` without credentials. Write methods exist on the same routes but require WordPress application-password authentication and are not part of the public surface.'
   contact:
     name: Addis Energy
     url: https://addisenergy.com/contact/
   x-derived-from: https://addisenergy.com/wp-json/ route index (218 routes across 9 namespaces, captured 2026-09-07)
   x-derived-on: '2026-09-07'
-  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and
-    no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every
-    path, parameter and error shape here was read from the server's own published route-index document and verified
-    against live anonymous responses on 2026-09-07 — nothing is invented.
+  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every path, parameter and error shape here was read from the server's own published route-index document and verified against live anonymous responses on 2026-09-07 — nothing is invented.
 servers:
 - url: https://addisenergy.com/wp-json
   description: Addis Energy WordPress REST API
@@ -26,8 +20,7 @@ paths:
     get:
       operationId: listPosts
       summary: List posts
-      description: Retrieve a paginated collection of published Addis Energy posts. Total count is returned in the
-        `X-WP-Total` response header and page count in `X-WP-TotalPages`; both are exposed cross-origin via `Access-Control-Expose-Headers`.
+      description: Retrieve a paginated collection of published Addis Energy posts. Total count is returned in the `X-WP-Total` response header and page count in `X-WP-TotalPages`; both are exposed cross-origin via `Access-Control-Expose-Headers`.
       tags:
       - Posts
       parameters:
@@ -264,13 +257,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Post'
-        '400': &id001
+        '400':
           description: Invalid parameter.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/WPError'
-        '404': &id002
+        '404':
           description: No route or resource matched the request.
           content:
             application/json:
@@ -317,36 +310,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
-        '400': *id001
-        '404': *id002
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
 components:
   schemas:
-    WPError:
-      type: object
-      description: The WordPress REST error envelope returned on every 4xx/5xx. Observed live on 2026-09-07.
-      properties:
-        code:
-          type: string
-          description: Machine-readable error slug, e.g. rest_post_invalid_page_number.
-          examples:
-          - rest_no_route
-        message:
-          type: string
-          description: Human-readable message.
-          examples:
-          - No route was found matching the URL and request method.
-        data:
-          type: object
-          description: Error detail; always carries the HTTP status.
-          properties:
-            status:
-              type: integer
-              examples:
-              - 404
-      required:
-      - code
-      - message
-      - data
     Post:
       type: object
       description: A published Addis Energy news item or press-coverage post.
@@ -364,7 +341,7 @@ components:
           description: The date the post was published, as GMT.
         guid:
           type: object
-          properties: &id003
+          properties:
             rendered:
               type: string
           description: The globally unique identifier for the post.
@@ -392,15 +369,21 @@ components:
           description: URL to the post on addisenergy.com.
         title:
           type: object
-          properties: *id003
+          properties:
+            rendered:
+              type: string
           description: The title for the post.
         content:
           type: object
-          properties: *id003
+          properties:
+            rendered:
+              type: string
           description: The content for the post.
         excerpt:
           type: object
-          properties: *id003
+          properties:
+            rendered:
+              type: string
           description: The excerpt for the post.
         author:
           type: integer
@@ -420,3 +403,29 @@ components:
         _links:
           type: object
           description: HAL-style link relations to related resources.
+    WPError:
+      type: object
+      description: The WordPress REST error envelope returned on every 4xx/5xx. Observed live on 2026-09-07.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug, e.g. rest_post_invalid_page_number.
+          examples:
+          - rest_no_route
+        message:
+          type: string
+          description: Human-readable message.
+          examples:
+          - No route was found matching the URL and request method.
+        data:
+          type: object
+          description: Error detail; always carries the HTTP status.
+          properties:
+            status:
+              type: integer
+              examples:
+              - 404
+      required:
+      - code
+      - message
+      - data

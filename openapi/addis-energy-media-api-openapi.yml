@@ -2,18 +2,13 @@ openapi: 3.2.0
 info:
   title: Addis Energy Media API
   version: wp/v2
-  description: Public, unauthenticated read access to the media library behind addisenergy.com — site photography,
-    diagrams, team headshots and press assets with their generated size variants (73 attachments at capture) — via
-    the WordPress core REST API. Anonymous access is read-only.
+  description: Public, unauthenticated read access to the media library behind addisenergy.com — site photography, diagrams, team headshots and press assets with their generated size variants (73 attachments at capture) — via the WordPress core REST API. Anonymous access is read-only.
   contact:
     name: Addis Energy
     url: https://addisenergy.com/contact/
   x-derived-from: https://addisenergy.com/wp-json/ route index (218 routes across 9 namespaces, captured 2026-09-07)
   x-derived-on: '2026-09-07'
-  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and
-    no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every
-    path, parameter and error shape here was read from the server's own published route-index document and verified
-    against live anonymous responses on 2026-09-07 — nothing is invented.
+  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every path, parameter and error shape here was read from the server's own published route-index document and verified against live anonymous responses on 2026-09-07 — nothing is invented.
 servers:
 - url: https://addisenergy.com/wp-json
   description: Addis Energy WordPress REST API
@@ -229,13 +224,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/MediaItem'
-        '400': &id001
+        '400':
           description: Invalid parameter.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/WPError'
-        '404': &id002
+        '404':
           description: No route or resource matched the request.
           content:
             application/json:
@@ -272,8 +267,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MediaItem'
-        '400': *id001
-        '404': *id002
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
 components:
   schemas:
     WPError:
@@ -304,8 +309,7 @@ components:
       - data
     MediaItem:
       type: object
-      description: A media library attachment behind addisenergy.com — site photography, diagrams, team headshots
-        and press assets, with their generated size variants.
+      description: A media library attachment behind addisenergy.com — site photography, diagrams, team headshots and press assets, with their generated size variants.
       properties:
         id:
           type: integer
@@ -323,7 +327,7 @@ components:
           format: uri
         title:
           type: object
-          properties: &id003
+          properties:
             rendered:
               type: string
           description: A WordPress rendered-content object.
@@ -331,7 +335,9 @@ components:
           type: integer
         caption:
           type: object
-          properties: *id003
+          properties:
+            rendered:
+              type: string
           description: A WordPress rendered-content object.
         alt_text:
           type: string

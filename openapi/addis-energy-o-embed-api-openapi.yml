@@ -1,33 +1,28 @@
 openapi: 3.2.0
 info:
-  title: Addis Energy oEmbed API
+  title: Addis Energy o Embed API
   version: wp/v2
-  description: Public oEmbed 1.0 provider endpoint for addisenergy.com URLs, returning embeddable rich metadata
-    — title, author, thumbnail and iframe HTML — for any post or page on the site. Verified live (HTTP 200) on 2026-09-07.
+  description: Public oEmbed 1.0 provider endpoint for addisenergy.com URLs, returning embeddable rich metadata — title, author, thumbnail and iframe HTML — for any post or page on the site. Verified live (HTTP 200) on 2026-09-07.
   contact:
     name: Addis Energy
     url: https://addisenergy.com/contact/
   x-derived-from: https://addisenergy.com/wp-json/ route index (218 routes across 9 namespaces, captured 2026-09-07)
   x-derived-on: '2026-09-07'
-  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and
-    no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every
-    path, parameter and error shape here was read from the server's own published route-index document and verified
-    against live anonymous responses on 2026-09-07 — nothing is invented.
+  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every path, parameter and error shape here was read from the server's own published route-index document and verified against live anonymous responses on 2026-09-07 — nothing is invented.
 servers:
 - url: https://addisenergy.com/wp-json
   description: Addis Energy WordPress REST API
 tags:
-- name: oEmbed
+- name: o Embed
   description: oEmbed 1.0 provider endpoint for addisenergy.com URLs.
 paths:
   /oembed/1.0/embed:
     get:
       operationId: getOEmbed
       summary: Get oEmbed metadata for a URL
-      description: Return oEmbed 1.0 metadata for an addisenergy.com post or page URL. Supports `json` and `xml`
-        response formats.
+      description: Return oEmbed 1.0 metadata for an addisenergy.com post or page URL. Supports `json` and `xml` response formats.
       tags:
-      - oEmbed
+      - o Embed
       parameters:
       - name: format
         in: query

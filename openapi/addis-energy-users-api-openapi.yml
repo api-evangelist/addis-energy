@@ -2,18 +2,13 @@ openapi: 3.2.0
 info:
   title: Addis Energy Users API
   version: wp/v2
-  description: 'Public, unauthenticated read access to the public author records behind addisenergy.com — the people
-    credited on published news posts (2 authors at capture). Anonymous responses are limited to the WordPress `view`
-    context: no email addresses, roles, capabilities or registration dates are exposed.'
+  description: 'Public, unauthenticated read access to the public author records behind addisenergy.com — the people credited on published news posts (2 authors at capture). Anonymous responses are limited to the WordPress `view` context: no email addresses, roles, capabilities or registration dates are exposed.'
   contact:
     name: Addis Energy
     url: https://addisenergy.com/contact/
   x-derived-from: https://addisenergy.com/wp-json/ route index (218 routes across 9 namespaces, captured 2026-09-07)
   x-derived-on: '2026-09-07'
-  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and
-    no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every
-    path, parameter and error shape here was read from the server's own published route-index document and verified
-    against live anonymous responses on 2026-09-07 — nothing is invented.
+  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every path, parameter and error shape here was read from the server's own published route-index document and verified against live anonymous responses on 2026-09-07 — nothing is invented.
 servers:
 - url: https://addisenergy.com/wp-json
   description: Addis Energy WordPress REST API
@@ -31,8 +26,7 @@ paths:
       parameters:
       - name: capabilities
         in: query
-        description: Limit result set to users matching at least one specific capability provided. Accepts csv list
-          or single capability.
+        description: Limit result set to users matching at least one specific capability provided. Accepts csv list or single capability.
         schema:
           type: array
           items:
@@ -114,8 +108,7 @@ paths:
           maximum: 100
       - name: roles
         in: query
-        description: Limit result set to users matching at least one specific role provided. Accepts csv list or
-          single role.
+        description: Limit result set to users matching at least one specific role provided. Accepts csv list or single role.
         schema:
           type: array
           items:
@@ -162,13 +155,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
-        '400': &id001
+        '400':
           description: Invalid parameter.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/WPError'
-        '404': &id002
+        '404':
           description: No route or resource matched the request.
           content:
             application/json:
@@ -205,8 +198,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-        '400': *id001
-        '404': *id002
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
 components:
   schemas:
     WPError:
@@ -237,8 +240,7 @@ components:
       - data
     User:
       type: object
-      description: A public author record. Anonymous requests see only authors with published posts, in the `view`
-        context.
+      description: A public author record. Anonymous requests see only authors with published posts, in the `view` context.
       properties:
         id:
           type: integer

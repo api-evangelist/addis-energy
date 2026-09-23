@@ -2,19 +2,13 @@ openapi: 3.2.0
 info:
   title: Addis Energy Discovery API
   version: wp/v2
-  description: Public, unauthenticated discovery metadata for addisenergy.com — the self-describing route index
-    (218 routes across 9 namespaces at capture), the registered content types and taxonomies, and the publication
-    statuses. This is the surface that makes the rest of the API machine-readable in the absence of any published
-    documentation.
+  description: Public, unauthenticated discovery metadata for addisenergy.com — the self-describing route index (218 routes across 9 namespaces at capture), the registered content types and taxonomies, and the publication statuses. This is the surface that makes the rest of the API machine-readable in the absence of any published documentation.
   contact:
     name: Addis Energy
     url: https://addisenergy.com/contact/
   x-derived-from: https://addisenergy.com/wp-json/ route index (218 routes across 9 namespaces, captured 2026-09-07)
   x-derived-on: '2026-09-07'
-  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and
-    no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every
-    path, parameter and error shape here was read from the server's own published route-index document and verified
-    against live anonymous responses on 2026-09-07 — nothing is invented.
+  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every path, parameter and error shape here was read from the server's own published route-index document and verified against live anonymous responses on 2026-09-07 — nothing is invented.
 servers:
 - url: https://addisenergy.com/wp-json
   description: Addis Energy WordPress REST API
@@ -26,8 +20,7 @@ paths:
     get:
       operationId: getRouteIndex
       summary: Get the API root discovery document
-      description: 'Retrieve the self-describing root index: site identity, registered namespaces, supported authentication
-        methods, and every registered route with its argument schemas.'
+      description: 'Retrieve the self-describing root index: site identity, registered namespaces, supported authentication methods, and every registered route with its argument schemas.'
       tags:
       - Discovery
       parameters:
@@ -43,13 +36,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RouteIndex'
-        '400': &id001
+        '400':
           description: Invalid parameter.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/WPError'
-        '404': &id002
+        '404':
           description: No route or resource matched the request.
           content:
             application/json:
@@ -80,15 +73,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RouteIndex'
-        '400': *id001
-        '404': *id002
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
   /wp/v2/types:
     get:
       operationId: listTypes
       summary: List content types
-      description: Retrieve the registered post types. Verified live on 2026-09-07 as WordPress core only — post,
-        page, attachment, nav_menu_item, wp_block, wp_template, wp_template_part, wp_global_styles, wp_navigation,
-        wp_font_family, wp_font_face. Addis Energy registers no custom post type.
+      description: Retrieve the registered post types. Verified live on 2026-09-07 as WordPress core only — post, page, attachment, nav_menu_item, wp_block, wp_template, wp_template_part, wp_global_styles, wp_navigation, wp_font_family, wp_font_face. Addis Energy registers no custom post type.
       tags:
       - Discovery
       parameters:
@@ -109,8 +110,18 @@ paths:
             application/json:
               schema:
                 type: object
-        '400': *id001
-        '404': *id002
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
   /wp/v2/types/{type}:
     get:
       operationId: getType
@@ -142,14 +153,23 @@ paths:
             application/json:
               schema:
                 type: object
-        '400': *id001
-        '404': *id002
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
   /wp/v2/taxonomies:
     get:
       operationId: listTaxonomies
       summary: List taxonomies
-      description: Retrieve the registered taxonomies. Verified live on 2026-09-07 as WordPress core only — category,
-        post_tag, nav_menu, wp_pattern_category.
+      description: Retrieve the registered taxonomies. Verified live on 2026-09-07 as WordPress core only — category, post_tag, nav_menu, wp_pattern_category.
       tags:
       - Discovery
       parameters:
@@ -175,8 +195,18 @@ paths:
             application/json:
               schema:
                 type: object
-        '400': *id001
-        '404': *id002
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
   /wp/v2/taxonomies/{taxonomy}:
     get:
       operationId: getTaxonomy
@@ -208,14 +238,23 @@ paths:
             application/json:
               schema:
                 type: object
-        '400': *id001
-        '404': *id002
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
   /wp/v2/statuses:
     get:
       operationId: listStatuses
       summary: List publication statuses
-      description: Retrieve the publication statuses visible to the caller. Anonymous callers see the public statuses
-        only.
+      description: Retrieve the publication statuses visible to the caller. Anonymous callers see the public statuses only.
       tags:
       - Discovery
       parameters:
@@ -236,8 +275,18 @@ paths:
             application/json:
               schema:
                 type: object
-        '400': *id001
-        '404': *id002
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
 components:
   schemas:
     WPError:
@@ -292,12 +341,10 @@ components:
           type: array
           items:
             type: string
-          description: 'Registered REST namespaces. Observed: oembed/1.0, contact-form-7/v1, duplicator/v1, siteground-optimizer/v1,
-            code-snippets/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1, wp-abilities/v1.'
+          description: 'Registered REST namespaces. Observed: oembed/1.0, contact-form-7/v1, duplicator/v1, siteground-optimizer/v1, code-snippets/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1, wp-abilities/v1.'
         authentication:
           type: object
-          description: 'Supported authentication methods. Observed: application-passwords, with its authorization
-            endpoint.'
+          description: 'Supported authentication methods. Observed: application-passwords, with its authorization endpoint.'
         routes:
           type: object
           description: Every registered route, keyed by route pattern, with its methods, args and endpoint schemas.

@@ -2,18 +2,13 @@ openapi: 3.2.0
 info:
   title: Addis Energy Pages API
   version: wp/v2
-  description: Public, unauthenticated read access to the static pages of addisenergy.com — Home, Team, News, Careers,
-    Contact, Privacy Policy and Terms & Conditions (7 published pages at capture) — via the WordPress core REST
-    API. Anonymous access is read-only.
+  description: Public, unauthenticated read access to the static pages of addisenergy.com — Home, Team, News, Careers, Contact, Privacy Policy and Terms & Conditions (7 published pages at capture) — via the WordPress core REST API. Anonymous access is read-only.
   contact:
     name: Addis Energy
     url: https://addisenergy.com/contact/
   x-derived-from: https://addisenergy.com/wp-json/ route index (218 routes across 9 namespaces, captured 2026-09-07)
   x-derived-on: '2026-09-07'
-  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and
-    no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every
-    path, parameter and error shape here was read from the server's own published route-index document and verified
-    against live anonymous responses on 2026-09-07 — nothing is invented.
+  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every path, parameter and error shape here was read from the server's own published route-index document and verified against live anonymous responses on 2026-09-07 — nothing is invented.
 servers:
 - url: https://addisenergy.com/wp-json
   description: Addis Energy WordPress REST API
@@ -227,13 +222,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Page'
-        '400': &id001
+        '400':
           description: Invalid parameter.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/WPError'
-        '404': &id002
+        '404':
           description: No route or resource matched the request.
           content:
             application/json:
@@ -280,8 +275,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Page'
-        '400': *id001
-        '404': *id002
+        '400':
+          description: Invalid parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: No route or resource matched the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
 components:
   schemas:
     WPError:
@@ -312,8 +317,7 @@ components:
       - data
     Page:
       type: object
-      description: A published static page of addisenergy.com — Home, Team, News, Careers, Contact, Privacy Policy,
-        Terms & Conditions.
+      description: A published static page of addisenergy.com — Home, Team, News, Careers, Contact, Privacy Policy, Terms & Conditions.
       properties:
         id:
           type: integer

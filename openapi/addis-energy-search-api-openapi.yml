@@ -2,17 +2,13 @@ openapi: 3.2.0
 info:
   title: Addis Energy Search API
   version: wp/v2
-  description: Public, unauthenticated cross-content search over addisenergy.com — posts and pages together — returning
-    lightweight id / title / url / type / subtype records. Verified live at 20 searchable objects on 2026-09-07.
+  description: Public, unauthenticated cross-content search over addisenergy.com — posts and pages together — returning lightweight id / title / url / type / subtype records. Verified live at 20 searchable objects on 2026-09-07.
   contact:
     name: Addis Energy
     url: https://addisenergy.com/contact/
   x-derived-from: https://addisenergy.com/wp-json/ route index (218 routes across 9 namespaces, captured 2026-09-07)
   x-derived-on: '2026-09-07'
-  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and
-    no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every
-    path, parameter and error shape here was read from the server's own published route-index document and verified
-    against live anonymous responses on 2026-09-07 — nothing is invented.
+  x-api-evangelist-note: Third-party profile. Addis Energy publishes no developer program, no developer portal and no SDKs. This documents the anonymously readable WordPress core REST content API behind addisenergy.com. Every path, parameter and error shape here was read from the server's own published route-index document and verified against live anonymous responses on 2026-09-07 — nothing is invented.
 servers:
 - url: https://addisenergy.com/wp-json
   description: Addis Energy WordPress REST API
